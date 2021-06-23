@@ -8,6 +8,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider, split, HttpLink } from "@a
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { setContext } from 'apollo-link-context'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 const httpLink = new HttpLink({
   uri: "http://localhost:4000/graphql"
@@ -51,7 +52,9 @@ const client = new ApolloClient({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <Provider store={store}>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </Provider>
   </ApolloProvider>
   ,
