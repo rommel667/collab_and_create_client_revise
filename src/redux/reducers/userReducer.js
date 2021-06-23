@@ -16,7 +16,7 @@ if (localStorage.getItem("token") || sessionStorage.getItem("token")) {
 }
 
 const user = (state = initialState, action) => {
-    
+    console.log(action);
     switch(action.type) {
         case "LOGIN": {
             localStorage.setItem("token", action.payload.user.token)

@@ -9,8 +9,9 @@ import { LOGIN_USER } from '../../../../graphql/gql/user/mutation'
 
 const Login = () => {
 
-    const [formState, setFormState] = useState({ email: "", password: "" })
-    const [rememberMe, setRememberMe] = useState(false)
+    const [ formState, setFormState ] = useState({ email: "", password: "" })
+    const [ rememberMe, setRememberMe ] = useState(false)
+    const [ error, setError ] = useState("")
 
     const dispatch = useDispatch()
 
@@ -23,20 +24,24 @@ const Login = () => {
         },
         variables: {
             email: formState.email, password: formState.password
+        },
+        onError(err) {
+          setError(err.graphQLErrors[0].message.split(': ')[1]);
         }
     })
 
 
     const handleSubmit = (e) => {
+        e.preventDefault()
         const { email, password } = formState
         if (email === "" || password === "") {
             return
         }
-        e.preventDefault()
         loginUser()
     }
 
     const onChangeInput = (event) => {
+        setError("")
         const { name, value } = event.target
         setFormState({ ...formState, [name]: value })
     }
@@ -55,6 +60,7 @@ const Login = () => {
                     onChangeInput={onChangeInput}
                     rememberMe={rememberMe}
                     toggleRememberMe={() => setRememberMe(!rememberMe)}
+                    error={error}
                 />
 
                 <Divider />

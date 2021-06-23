@@ -9,15 +9,21 @@ const Register = ({ user }) => {
 
     const history = useHistory()
 
-    const [formState, setFormState] = useState({ name: "", email: "", password: "", confirmPassword: "" })
+    const [ formState, setFormState ] = useState({ name: "", email: "", password: "", confirmPassword: "" })
+    const [ error, setError ] = useState("")
 
     const [addUser] = useMutation(REGISTER_USER, {
         update(proxy, result) {
             localStorage.setItem('email', result.data.registerUser.email)
+            setFormState({ name: "", email: "", password: "", confirmPassword: "" })
             history.push('/verification')
         },
         variables: {
             name: formState.name, email: formState.email, password: formState.password
+        },
+        onError(err) {
+            console.log(err.graphQLErrors[0]);
+            setError(err.graphQLErrors[0].message);
         }
     })
 
@@ -28,13 +34,14 @@ const Register = ({ user }) => {
             return
         }
         if (password !== confirmPassword) {
+            setError("Passwords not match!")
             return
         }
         addUser()
-        setFormState({ name: "", email: "", password: "", confirmPassword: "" })
     }
 
     const onchangeInput = (event) => {
+        setError("")
         const { name, value } = event.target
         setFormState({ ...formState, [name]: value })
     }
@@ -51,6 +58,7 @@ const Register = ({ user }) => {
                     handleSubmit={handleSubmit}
                     formState={formState}
                     onChangeInput={onchangeInput}
+                    error={error}
                 />
 
             </div>

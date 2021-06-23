@@ -2,7 +2,7 @@ import React from 'react'
 import Input from '../../../SharedComponents/Input'
 import Button from '../../../SharedComponents/Button'
 
-const Form = ({ handleSubmit, formState, onChangeInput }) => {
+const Form = ({ handleSubmit, formState, onChangeInput, error }) => {
     return (
         <form className="mt-8 space-y-6" action="#" method="POST" onSubmit={handleSubmit}>
           <input type="hidden" name="remember" defaultValue="true" />
@@ -47,6 +47,7 @@ const Form = ({ handleSubmit, formState, onChangeInput }) => {
               autoComplete="current-password"
               placeholder="Confirm Password"
             />
+           <p className="absolute text-xs text-red-500">{error}</p>
 
           </div>
 

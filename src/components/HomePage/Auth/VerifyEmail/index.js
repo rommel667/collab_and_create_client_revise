@@ -14,11 +14,11 @@ const VerifyEmail = () => {
 
     const dispatch = useDispatch()
 
-    const [ code, setCode ] = useState("")
-    const [ error, setError ] = useState(null)
+    const [code, setCode] = useState("")
+    const [error, setError] = useState("")
 
     useEffect(() => {
-        if(!localStorage.getItem('email')) {
+        if (!localStorage.getItem('email')) {
             history.replace('/register')
         }
     }, [])
@@ -27,7 +27,7 @@ const VerifyEmail = () => {
         update(proxy, result) {
             localStorage.removeItem('email')
             setCode(null)
-            dispatch({ type: "LOGIN", payload: {user : result.data.verifyUser} })
+            dispatch({ type: "LOGIN", payload: { user: result.data.verifyUser } })
             history.push('/')
         },
         variables: {
@@ -56,6 +56,11 @@ const VerifyEmail = () => {
         verifyUser()
     }
 
+    const onChangeInput = (e) => {
+        setError("")
+        setCode(e.target.value)
+    }
+
     return (
         <div className="bg-white min-h-screen flex justify-center py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-8">
@@ -66,23 +71,23 @@ const VerifyEmail = () => {
 
                 <form className="mt-8 space-y-6" action="#" method="POST" onSubmit={handleSubmit}>
                     <input type="hidden" name="remember" defaultValue="true" />
-                    <div className="rounded-md shadow-sm -space-y-px">
+                    <div className="rounded-md shadow-sm relative">
                         <Input
                             value={code}
-                            onChange={e => setCode(e.target.value)}
+                            onChange={onChangeInput}
                             label="Verification Code"
                             id="verificationCode"
                             name="verificationCode"
                             type="number"
                             placeholder="Email verification code"
                         />
-                        
-                        {error && <p>{error}</p>}
+
+                        <p className="absolute text-xs text-red-500">{error}</p>
                     </div>
 
 
                     <Button buttonText="Verify" />
-                        
+
 
                     <p>No email received? <span className="cursor-pointer" onClick={resendCode}>Resend Code</span> </p>
 
