@@ -1,10 +1,11 @@
 import React from 'react'
+import WithUserHeader from './WithUserHeader'
+import NoUserHeader from './NoUserHeader'
 
-const Header = () => {
+
+const Header = ({ user }) => {
     return (
-        <div>
-            Header
-        </div>
+        user ? <WithUserHeader /> : <NoUserHeader />
     )
 }
 

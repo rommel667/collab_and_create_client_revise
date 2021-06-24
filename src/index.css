@@ -3,12 +3,31 @@
 @tailwind utilities;
 
 @layer utilities {
-    @variants responsive {
-      .inputNumber::-webkit-inner-spin-button,
-      .inputNumber::-webkit-outer-spin-button {
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-      }
+  @variants responsive {
+    .inputNumber::-webkit-inner-spin-button,
+    .inputNumber::-webkit-outer-spin-button {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
     }
   }
+}
+
+@layer utilities {
+  .text-gradient {
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+
+@layer utilities {
+  @variants responsive {
+    .margin-fifth {
+      margin-left: 20%
+    }
+    .margin-third {
+      margin-left: 33%
+    }
+  }
+}

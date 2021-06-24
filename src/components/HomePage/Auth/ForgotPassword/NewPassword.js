@@ -12,7 +12,7 @@ const NewPassword = () => {
 
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
-    const [error, setError] = useState(null)
+    const [error, setError] = useState("")
 
     const [newPassword] = useMutation(NEW_PASSWORD, {
         update(proxy, result) {
@@ -71,13 +71,13 @@ const NewPassword = () => {
                                 placeholder="Confirm Password"
                             />
 
-                            {error && <p>{error}</p>}
+                            <p className="absolute text-xs text-red-500">{error}</p>
                         </div>
 
                     </div>
 
                     <Button buttonText="Confirm" />
-                        
+
                 </form>
             </div>
         </div>

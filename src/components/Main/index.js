@@ -1,6 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 
-const Main = () => {
+const Main = ({ user }) => {
+
+const history = useHistory()
+
+    useEffect(() => {
+        if(!user) {
+            history.replace("/")
+        }
+    }, [user])
+
     return (
         <div>
             Main
