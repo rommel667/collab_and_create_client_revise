@@ -15,6 +15,7 @@ const MenuGroup = ({ menuGroupText, menus }) => {
                         <Menu
                             key={index}
                             menu={menu}
+                            menuGroupText={menuGroupText}
                         />
                     )
                 })}

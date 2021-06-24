@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import HomePage from './components/HomePage'
 import Layout from './components/Layout';
 import Main from './components/Main';
+import InitialQueryProvider from './graphql/hoc/InitialQueryProvider';
 
 const App = () => {
 
@@ -10,11 +11,11 @@ const App = () => {
 
   return (
     <div className="bg-gray-50">
+      <InitialQueryProvider />
       <Layout user={user}>
         <HomePage user={user} />
         {user && <Main user={user} />}
       </Layout>
-
     </div>
   );
 }

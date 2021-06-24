@@ -1,11 +1,68 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 
-const Menu = ({ menu }) => {
+const Menu = ({ menu, menuGroupText }) => {
 
     const location = useLocation()
-    // const projects = useSelector(state => state.project.projects)
+    const { projects } = useSelector(state => state.project)
+    const { myInfo, user } = useSelector(state => state.user)
+
+    const [ personalTasksCount, setPersonalTasksCount ] = useState(0)
+    const [ personalNotesCount, setPersonalNotesCount ] = useState(0)
+    const [ taskAssignToMe, setTaskAssignToMe ] = useState(null)
+    const [ taskCreatedByMe, setTaskCreatedByMe ] = useState(null)
+    const [ noteCreatedByMe, setNoteCreatedByMe ] = useState(null)
+
+    useEffect(() => {
+        let tasksCount = 0
+        let notesCount = 0
+        const taskAssignToMe = []
+        const taskCreatedByMe = []
+        const noteCreatedByMe = []
+        myInfo?.personalTaskColumns.map(col => {
+            col.tasks.map(task => {
+                tasksCount = tasksCount + 1
+                return null
+            })
+            return null
+        })
+        myInfo?.personalNoteCategories.map(cat => {
+            cat.notes.map(note => {
+                notesCount = notesCount + 1
+                return null
+            })
+            return null
+        })
+        projects?.map(project => {
+            project.taskColumns.map(col => {
+                col.tasks.map(task => {
+                    console.log(task);
+                    if(task.createdBy._id === user._id) {
+                        taskCreatedByMe.push(task._id)
+                    }
+                    if(task.inCharge.some(ic => ic._id === user._id)) {
+                        taskAssignToMe.push(task._id)
+                    }
+                })
+            })
+        })
+        projects?.map(project => {
+            project.noteCategories.map(cat => {
+                cat.notes.map(note => {
+                    if(note.createdBy._id === user._id) {
+                        noteCreatedByMe.push(note._id)
+                    }
+                })
+            })
+        })
+       
+        setPersonalTasksCount(tasksCount)
+        setPersonalNotesCount(notesCount)
+        setTaskAssignToMe(taskAssignToMe)
+        setTaskCreatedByMe(taskCreatedByMe)
+        setNoteCreatedByMe(noteCreatedByMe)
+    }, [projects, myInfo])
     
     return (
         <Link
@@ -17,7 +74,17 @@ const Menu = ({ menu }) => {
             {menu.text}
 
             <span className={`${location.pathname === menu.path ? "text-gray-900" : "text-gray-500"} text-xs font-semibold`}>
-            {/* {projects?.filter(project => project.status === menu.text).length} */}
+            {menuGroupText === "Projects" && projects?.filter(project => project.status === menu.text).length}
+
+            {(menuGroupText === "Tasks" && menu.text === "Personal Tasks" ) && personalTasksCount}
+            {(menuGroupText === "Tasks" && menu.text === "Assigned to me" ) && taskAssignToMe?.length}
+            {(menuGroupText === "Tasks" && menu.text === "Created by me" ) && taskCreatedByMe?.length}
+
+            {(menuGroupText === "Notes" && menu.text === "Personal Notes" ) && personalNotesCount}
+            {(menuGroupText === "Notes" && menu.text === "Created by me" ) && noteCreatedByMe?.length}
+
+            {(menuGroupText === "Devs" && menu.text === "My Colleagues") && myInfo?.colleagues.length}
+            {(menuGroupText === "Devs" && menu.text === "My Teams") && myInfo?.verifiedTeams.length}
             </span>
         </Link>
     )

@@ -1,7 +1,8 @@
 import jwtDecode from 'jwt-decode'
 
 const initialState = {
-    user: null
+    user: null,
+    myInfo: null
 }
 
 if (localStorage.getItem("token") || sessionStorage.getItem("token")) {
@@ -44,6 +45,12 @@ const user = (state = initialState, action) => {
             localStorage.removeItem("rememberMe")
             return {
                 user: null,
+            }
+        }
+        case "FETCH_MY_INFO": {
+            return {
+                ...state,
+                myInfo: action.payload.myInfo,
             }
         }
         default: {
