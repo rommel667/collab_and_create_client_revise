@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 const Overlay = () => {
 
     const dispatch = useDispatch()
-    const { openDrawer } = useSelector(state => state.layout)
+    const { openDrawer } = useSelector(state => state.setting)
 
     return (
         openDrawer && 

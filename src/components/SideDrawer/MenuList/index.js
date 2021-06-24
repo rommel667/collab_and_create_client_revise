@@ -33,7 +33,6 @@ const menuArray = [
     menus: [
       { text: "My Colleagues", path: "/devs/colleagues" },
       { text: "My Teams", path: "/devs/teams" },
-      { text: "Suggestions", path: "/devs/suggestions" },
     ]
   },
 ]

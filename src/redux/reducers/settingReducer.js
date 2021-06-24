@@ -1,10 +1,11 @@
 const initialState = {
-    openDrawer: false
+    openDrawer: false,
+    darkTheme: false,
 }
 
 
 
-const layout = (state = initialState, action) => {
+const setting = (state = initialState, action) => {
     
     switch(action.type) {
         case "TOGGLE_DRAWER": {
@@ -25,4 +26,4 @@ const layout = (state = initialState, action) => {
     }
 }
 
-export default layout
+export default setting

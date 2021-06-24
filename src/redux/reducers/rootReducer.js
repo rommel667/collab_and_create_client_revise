@@ -1,13 +1,21 @@
 import { combineReducers } from 'redux'
+import { persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage';
+
 import userReducer from './userReducer'
 import notificatioReducer from './notificationReducer'
-import layoutReducer from './layoutReducer'
+import settingReducer from './settingReducer'
 
+const persistConfig = {
+    key: 'root',
+    storage,
+    whitelist: [ 'setting']
+}
 
 const rootReducer = combineReducers({
     user: userReducer,
     notification: notificatioReducer,
-    layout: layoutReducer,
+    setting: settingReducer,
 })
 
-export default rootReducer
+export default persistReducer(persistConfig, rootReducer)

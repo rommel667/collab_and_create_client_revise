@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const TopHeader = () => {
 
-    const { openDrawer } = useSelector(state => state.layout)
+    const { openDrawer } = useSelector(state => state.setting)
     const dispatch = useDispatch()
 
     return (
