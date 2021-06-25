@@ -37,15 +37,17 @@ const Menu = ({ menu, menuGroupText }) => {
         projects?.map(project => {
             project.taskColumns.map(col => {
                 col.tasks.map(task => {
-                    console.log(task);
                     if(task.createdBy._id === user._id) {
                         taskCreatedByMe.push(task._id)
                     }
                     if(task.inCharge.some(ic => ic._id === user._id)) {
                         taskAssignToMe.push(task._id)
                     }
+                    return null
                 })
+                return null
             })
+            return null
         })
         projects?.map(project => {
             project.noteCategories.map(cat => {
@@ -53,8 +55,11 @@ const Menu = ({ menu, menuGroupText }) => {
                     if(note.createdBy._id === user._id) {
                         noteCreatedByMe.push(note._id)
                     }
+                    return null
                 })
+                return null
             })
+            return null
         })
        
         setPersonalTasksCount(tasksCount)
