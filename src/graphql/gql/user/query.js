@@ -2,9 +2,14 @@ import { gql } from 'graphql-tag';
 
 
 export const FETCH_MY_INFO = gql`
-query {
+query myInfo {
     myInfo {
         _id
+        name
+        email
+        photo
+        createdAt
+        updatedAt
         colleagues {
             _id
           }

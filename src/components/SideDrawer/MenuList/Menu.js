@@ -88,8 +88,8 @@ const Menu = ({ menu, menuGroupText }) => {
             {(menuGroupText === "Notes" && menu.text === "Personal Notes" ) && personalNotesCount}
             {(menuGroupText === "Notes" && menu.text === "Created by me" ) && noteCreatedByMe?.length}
 
-            {(menuGroupText === "Devs" && menu.text === "My Colleagues") && myInfo?.colleagues.length}
-            {(menuGroupText === "Devs" && menu.text === "My Teams") && myInfo?.verifiedTeams.length}
+            {(menuGroupText === "Devs" && menu.text === "Colleagues") && myInfo?.colleagues.length}
+            {(menuGroupText === "Devs" && menu.text === "Teams") && myInfo?.verifiedTeams.length}
             </span>
         </Link>
     )

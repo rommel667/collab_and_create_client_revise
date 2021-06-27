@@ -1,14 +1,16 @@
 const initialState = {
     colleagues: [],
     suggestions: [],
-    recentInvites: [],
     pendingRequest: [],
-    pendingRespond: []
+    pendingRespond: [],
+
+    recentInvites: [],
+    recentAccepts: [],
 }
 
 
 const dev = (state = initialState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case "FETCH_COLLEAGUES": {
             return {
                 ...state,
@@ -26,13 +28,13 @@ const dev = (state = initialState, action) => {
         case "SEND_INVITE": {
             return {
                 ...state,
-                recentInvites: [ ...state.recentInvites, action.payload.newInvite._id ] 
+                recentInvites: [...state.recentInvites, action.payload.newInvite._id]
             }
         }
         case "CANCEL_REQUEST_ON_SUGGESTIONS": {
             return {
                 ...state,
-                recentInvites: state.recentInvites.filter(id => id !== action.payload.cancelRequest._id )
+                recentInvites: state.recentInvites.filter(id => id !== action.payload.cancelRequest._id)
             }
         }
 
@@ -46,7 +48,7 @@ const dev = (state = initialState, action) => {
         case "CANCEL_REQUEST_ON_PENDING": {
             return {
                 ...state,
-                pendingRequest: state.pendingRequest.filter(request => request._id !== action.payload.cancelRequest._id )
+                pendingRequest: state.pendingRequest.filter(request => request._id !== action.payload.cancelRequest._id)
             }
         }
 
@@ -60,14 +62,46 @@ const dev = (state = initialState, action) => {
         case "RESPOND_ACCEPT_INVITE": {
             return {
                 ...state,
-                colleagues: [ ...state.colleagues, action.payload.acceptInvite ],
-                pendingRespond: state.pendingRespond.filter(respond => respond._id !== action.payload.acceptInvite._id )
+                colleagues: [ action.payload.acceptInvite, ...state.colleagues ],
+                recentAccepts: [ action.payload.acceptInvite._id, ...state.recentAccepts ]
             }
         }
         case "RESPOND_REJECT_INVITE": {
             return {
                 ...state,
-                pendingRespond: state.pendingRespond.filter(respond => respond._id !== action.payload.rejectInvite._id )
+                pendingRespond: state.pendingRespond.filter(respond => respond._id !== action.payload.rejectInvite._id)
+            }
+        }
+
+
+        //SUBSCRIPTIONS
+        case "SEND_INVITE_SUBSCRIPTION": {
+            if (state.pendingRespond.some(res => res._id === action.payload.newForRespond._id)) {
+                return { ...state }
+            } else {
+                return {
+                    ...state,
+                    pendingRespond: [action.payload.newForRespond, ...state.pendingRespond]
+                }
+            }
+        }
+        case "CANCEL_REQUEST_SUBSCRIPTION": {
+            return {
+                ...state,
+                pendingRespond: state.pendingRespond.filter(res => res._id !== action.payload.cancelForRespond._id)
+            }
+        }
+        case "ACCEPT_INVITE_SUBSCRIPTION": {
+            return {
+                ...state,
+                colleagues: [ action.payload.acceptInvite, ...state.colleagues ],
+                pendingRequest: state.pendingRequest.filter(req => req._id !== action.payload.acceptInvite._id)
+            }
+        }
+        case "REJECT_INVITE_SUBSCRIPTION": {
+            return {
+                ...state,
+                pendingRequest: state.pendingRequest.filter(req => req._id !== action.payload.rejectInvite._id)
             }
         }
 

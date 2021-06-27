@@ -31,8 +31,8 @@ const menuArray = [
   {
     groupText: "Devs",
     menus: [
-      { text: "My Colleagues", path: "/devs/colleagues" },
-      { text: "My Teams", path: "/devs/teams" },
+      { text: "Colleagues", path: "/devs/colleagues" },
+      { text: "Teams", path: "/devs/teams" },
     ]
   },
 ]

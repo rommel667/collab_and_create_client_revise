@@ -5,6 +5,7 @@ import Tasks from './Tasks'
 import Notes from './Notes'
 import Devs from './Devs'
 import { Switch, Route, useLocation } from 'react-router-dom'
+import InitialQueryProvider from '../../graphql/hoc/InitialQueryProvider'
 
 const Main = ({ user }) => {
 
@@ -19,7 +20,9 @@ const location = useLocation()
 
     return (
         <main className={`${location.pathname.split('/')[1] === "tasks"  ? "overflow-hidden flex-1" : "overflow-auto"} p-3`}>
+        <InitialQueryProvider />
             <Switch>
+            
                 <Route path='/projects' render={(props) => (
                     <Projects {...props} />)}
                 />

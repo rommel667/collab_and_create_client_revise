@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Mutual from '../Shared/Mutual'
+import Mutual from '../../../../../../Main/Devs/Colleagues/Shared/Mutual'
 
 const Colleague = ({ col, myInfo }) => {
 

@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FETCH_COLLEAGUES, FETCH_PENDING_INVITES_REQUEST, FETCH_PENDING_INVITES_RESPOND, FETCH_SUGGESTIONS } from '../../../../graphql/gql/dev/query'
 import MyColleagues from './MyColleagues'
@@ -11,15 +11,17 @@ const Colleagues = () => {
 
     const { myInfo } = useSelector(state => state.user)
 
+    const [ show, setShow ] = useState("colleagues")
+
     const dispatch = useDispatch()
-    const { colleagues, suggestions, pendingRequest, pendingRespond} = useSelector(state => state.dev)
+    const { colleagues, suggestions, pendingRequest, pendingRespond } = useSelector(state => state.dev)
 
     const { data: colleaguesData } = useQuery(
         FETCH_COLLEAGUES,
         {
-          onCompleted: () => {
-            dispatch({ type: "FETCH_COLLEAGUES", payload: { colleagues: colleaguesData.colleagues } })
-          }
+            onCompleted: () => {
+                dispatch({ type: "FETCH_COLLEAGUES", payload: { colleagues: colleaguesData.colleagues } })
+            }
         })
 
     const { loading: suggestionsLoading, data: suggestionsData } = useQuery(
@@ -48,14 +50,20 @@ const Colleagues = () => {
 
     return (
         <div>
-            <div>
+            <div className="flex gap-3 mb-4">
+                <p className={`${show === "colleagues" ? "text-indigo-600" : ""} cursor-pointer`} onClick={() => setShow("colleagues")}>Colleagues</p>
+                <p className={`${show === "invites" ? "text-indigo-600" : ""} cursor-pointer`} onClick={() => setShow("invites")}>Invites</p>
+            </div>
+            {show === "colleagues" &&
+            <div className="flex gap-2">
                 <MyColleagues colleagues={colleagues} myInfo={myInfo} />
-                <Suggestions suggestions={suggestions} />
-            </div>
-            <div>
-                <PendingRespond  pendingRespond={pendingRespond} />
-                <PendingRequest pendingRequest={pendingRequest} />
-            </div>
+                <Suggestions suggestions={suggestions} myInfo={myInfo} />
+            </div>}
+            {show === "invites" &&
+            <div className="flex gap-2">
+                <PendingRespond pendingRespond={pendingRespond} myInfo={myInfo} />
+                <PendingRequest pendingRequest={pendingRequest} myInfo={myInfo} />
+            </div>}
         </div>
     )
 }

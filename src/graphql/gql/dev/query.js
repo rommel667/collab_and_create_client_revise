@@ -23,6 +23,10 @@ query {
         name
         email
         photo
+        colleagues {
+          _id
+          photo
+        }
     }
   }
 `
@@ -34,6 +38,10 @@ query {
         name
         email
         photo
+        colleagues {
+          _id
+          photo
+        }
     }
   }
 `
@@ -45,6 +53,10 @@ query {
         name
         email
         photo
+        colleagues {
+          _id
+          photo
+        }
     }
   }
 `

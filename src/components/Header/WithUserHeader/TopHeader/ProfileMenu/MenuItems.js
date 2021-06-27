@@ -7,7 +7,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-const MenuItems = ({ open }) => {
+const MenuItems = ({ open, setOpenProfile }) => {
 
     const dispatch = useDispatch()
     const history = useHistory()
@@ -34,7 +34,7 @@ const MenuItems = ({ open }) => {
                 static
                 className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
             >
-                <Menu.Item>
+                <Menu.Item onClick={setOpenProfile}>
                     {({ active }) => (
                         <p
                             className={classNames(
@@ -42,7 +42,7 @@ const MenuItems = ({ open }) => {
                                 'block px-4 py-2 text-sm text-gray-700 cursor-pointer'
                             )}
                         >
-                            Your Profile
+                            My Profile
                         </p>
                     )}
                 </Menu.Item>
