@@ -6,6 +6,7 @@ import Notes from './Notes'
 import Devs from './Devs'
 import { Switch, Route, useLocation } from 'react-router-dom'
 import InitialQueryProvider from '../../graphql/hoc/InitialQueryProvider'
+import MyProfile from './MyProfile'
 
 const Main = ({ user }) => {
 
@@ -34,6 +35,9 @@ const location = useLocation()
                 />
                 <Route exact path='/devs/:devPage' render={(props) => (
                     <Devs {...props} />)}
+                />
+                <Route path='/myprofile' render={(props) => (
+                    <MyProfile {...props} />)}
                 />
             </Switch>
         </main>

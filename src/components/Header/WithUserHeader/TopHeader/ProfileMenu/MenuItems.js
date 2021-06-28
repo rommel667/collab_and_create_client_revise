@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -34,18 +34,20 @@ const MenuItems = ({ open, setOpenProfile }) => {
                 static
                 className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
             >
-                <Menu.Item onClick={setOpenProfile}>
-                    {({ active }) => (
-                        <p
-                            className={classNames(
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700 cursor-pointer'
-                            )}
-                        >
-                            My Profile
-                        </p>
-                    )}
-                </Menu.Item>
+                <Link to="/myprofile">
+                    <Menu.Item>
+                        {({ active }) => (
+                            <p
+                                className={classNames(
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-sm text-gray-700 cursor-pointer'
+                                )}
+                            >
+                                My Profile
+                            </p>
+                        )}
+                    </Menu.Item>
+                </Link>
                 <Menu.Item>
                     {({ active }) => (
                         <p

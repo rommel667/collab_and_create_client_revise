@@ -53,6 +53,13 @@ const user = (state = initialState, action) => {
                 myInfo: action.payload.myInfo,
             }
         }
+        case "EDIT_PROFILE": {
+            const { name, photo, skills, portfolio } = action.payload.myInfo
+            return {
+                ...state,
+                myInfo: { ...state.myInfo, name, photo, skills, portfolio  }
+            }
+        }
         default: {
             return state;
         }

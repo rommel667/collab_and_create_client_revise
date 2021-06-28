@@ -8,6 +8,8 @@ query myInfo {
         name
         email
         photo
+        skills
+        portfolio
         createdAt
         updatedAt
         colleagues {

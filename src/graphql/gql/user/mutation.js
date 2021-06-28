@@ -41,6 +41,31 @@ mutation registerUser(
 
 `
 
+
+export const EDIT_PROFILE = gql`
+mutation editProfile(
+    $name: String!
+    $photo: String!
+    $skills: [String]
+    $portfolio: String
+) {
+    editProfile(
+            name: $name
+            photo: $photo
+            skills: $skills
+            portfolio: $portfolio
+        ) {
+        _id
+        name
+        photo
+        skills
+        portfolio
+        
+    }
+}
+
+`
+
 export const SIGN_IN_WITH_GOOGLE = gql`
 mutation signInWithGoogle(
   $name: String!
