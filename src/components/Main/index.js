@@ -10,20 +10,20 @@ import MyProfile from './MyProfile'
 
 const Main = ({ user }) => {
 
-const history = useHistory()
-const location = useLocation()
+    const history = useHistory()
+    const location = useLocation()
 
     useEffect(() => {
-        if(!user) {
+        if (!user) {
             history.replace("/")
         }
     }, [user])
 
     return (
-        <main className={`${location.pathname.split('/')[1] === "tasks"  ? "overflow-hidden flex-1" : "overflow-auto"} p-3`}>
-        <InitialQueryProvider />
+        <main className={`${location.pathname.split('/')[1] === "tasks" ? "overflow-hidden flex-1" : "overflow-auto"} p-3`}>
+            <InitialQueryProvider />
             <Switch>
-            
+
                 <Route path='/projects' render={(props) => (
                     <Projects {...props} />)}
                 />

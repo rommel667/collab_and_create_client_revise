@@ -6,7 +6,7 @@ const initialState = {
 const project = (state = initialState, action) => {
     console.log(action);
     switch(action.type) {
-        case "FETCH_PROJECTS": {
+        case "PROJECTS_BY_USER": {
             const projectsClone = [ ...action.payload.projects ]
             const sortedProjects = projectsClone.sort( (a, b) => {
                 const d1 = new Date(a.createdAt)

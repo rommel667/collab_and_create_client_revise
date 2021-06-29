@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-const BottomLeftLabel = () => {
+const BottomLeft = () => {
 
   
 
@@ -13,4 +13,4 @@ const BottomLeftLabel = () => {
     )
 }
 
-export default BottomLeftLabel
+export default BottomLeft

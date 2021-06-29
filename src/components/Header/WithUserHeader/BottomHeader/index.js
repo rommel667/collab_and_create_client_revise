@@ -1,25 +1,83 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import BottomLeftLabel from './BottomLeftLabel'
+import BottomLeft from './BottomLeft'
+import BottomRight from './BottomRight'
+import ModalComponent from '../../../SharedComponents/ModalComponent'
+import NewTeam from '../../../Forms/NewTeam'
+import { useMutation } from '@apollo/client'
+import { NEW_TEAM } from '../../../../graphql/gql/team/mutation'
+import { VERIFIED_TEAMS } from '../../../../graphql/queries/dev/VerifiedTeamsQuery'
+
+
 
 const BottomHeader = () => {
 
-   
+    const location = useLocation()
+
+    const dispatch = useDispatch()
+
+    const { newTeamForm } = useSelector(state => state.team)
+
+    const [openNewTeamModal, setOpenNewTeamModal] = useState(false)
+
+    const cancelNewTeam = () => {
+        setOpenNewTeamModal(false)
+        dispatch({ type: "RESET_NEW_TEAM_FORM" })
+    }
+
+    const [newTeam, { data: newTeamData, loading: newTeamLoading }] = useMutation(NEW_TEAM, {
+        update(proxy, result) {
+            const data = proxy.readQuery({
+                query: VERIFIED_TEAMS,
+            })
+            if (data) {
+                proxy.writeQuery({
+                    query: VERIFIED_TEAMS,
+                    data: {
+                        verifiedTeams: [
+                            result.data.newTeam, ...data.verifiedTeams
+                        ]
+                    }
+                });
+                cancelNewTeam()
+                dispatch({ type: "NEW_TEAM", payload: { newTeam: result.data.newTeam } })
+            }
+        },
+        variables: {
+            teamName: newTeamForm.teamName, members: newTeamForm.members.map(member => member.value)
+        },
+        onError(err) {
+            // setError(err.graphQLErrors[0].message.split(': ')[1]);
+            console.log(err);
+        }
+    })
+
+    const openModalHandler = () => {
+        if (location.pathname.split('/')[2] === "teams") {
+            setOpenNewTeamModal(true)
+        }
+    }
+
+
+
     return (
         <div className="flex justify-between items-center">
-            <BottomLeftLabel/>
 
-            <div className="flex items-center gap-1">
-                <button
-                    className="flex justify-center items-center bg-indigo-600 rounded-md py-1 pr-2 pl-1 text-gray-100 focus:outline-none"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                </button>
-            </div>
+            <BottomLeft />
 
+            <BottomRight openModalHandler={openModalHandler} />
+
+            <ModalComponent
+                open={openNewTeamModal}
+                onClose={cancelNewTeam}
+                cancel={cancelNewTeam}
+                modalTitle="New Team"
+                confirmButtonText="Confirm"
+                confirm={newTeam}
+            >
+                <NewTeam />
+            </ModalComponent>
 
 
         </div>

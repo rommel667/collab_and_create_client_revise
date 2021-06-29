@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMutation, useQuery } from '@apollo/client';
 import MyColleagues from './MyColleagues';
-import { FETCH_COLLEAGUES } from '../../../graphql/gql/dev/query';
 import { FaEdit } from "react-icons/fa";
 import ModalComponent from '../../SharedComponents/ModalComponent'
 import EditProfile from '../../Forms/EditProfile';
 import MyInfo from './MyInfo';
 import { EDIT_PROFILE } from '../../../graphql/gql/user/mutation';
+import ColleaguesQuery from '../../../graphql/queries/dev/ColleaguesQuery';
 
 const MyProfile = () => {
 
@@ -22,13 +22,7 @@ const MyProfile = () => {
     const [photo, setPhoto] = useState(myInfo.photo)
     const [skills, setSkills] = useState([...myInfo.skills])
 
-    const { data: colleaguesData } = useQuery(
-        FETCH_COLLEAGUES,
-        {
-            onCompleted: () => {
-                dispatch({ type: "FETCH_COLLEAGUES", payload: { colleagues: colleaguesData.colleagues } })
-            }
-        })
+    
 
     const cancelEditProfile = () => {
         setShowEditProfile(false)
@@ -86,6 +80,9 @@ const MyProfile = () => {
 
     return (
         <div>
+            <>
+                <ColleaguesQuery />
+            </>
             <div className="flex flex-row justify-between border-2 p-2">
 
                 <MyInfo myInfo={myInfo} />

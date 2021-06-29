@@ -6,6 +6,8 @@ const Menu = ({ menu, menuGroupText }) => {
 
     const location = useLocation()
     const { projects } = useSelector(state => state.project)
+    const { colleagues } = useSelector(state => state.dev)
+    const { verifiedTeams } = useSelector(state => state.team)
     const { myInfo, user } = useSelector(state => state.user)
 
     const [ personalTasksCount, setPersonalTasksCount ] = useState(0)
@@ -88,8 +90,8 @@ const Menu = ({ menu, menuGroupText }) => {
             {(menuGroupText === "Notes" && menu.text === "Personal Notes" ) && personalNotesCount}
             {(menuGroupText === "Notes" && menu.text === "Created by me" ) && noteCreatedByMe?.length}
 
-            {(menuGroupText === "Devs" && menu.text === "Colleagues") && myInfo?.colleagues.length}
-            {(menuGroupText === "Devs" && menu.text === "Teams") && myInfo?.verifiedTeams.length}
+            {(menuGroupText === "Devs" && menu.text === "Colleagues") && colleagues?.length}
+            {(menuGroupText === "Devs" && menu.text === "Teams") && verifiedTeams?.length}
             </span>
         </Link>
     )

@@ -47,7 +47,7 @@ const user = (state = initialState, action) => {
                 user: null,
             }
         }
-        case "FETCH_MY_INFO": {
+        case "MY_INFO": {
             return {
                 ...state,
                 myInfo: action.payload.myInfo,

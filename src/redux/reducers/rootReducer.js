@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 
 import userReducer from './userReducer'
 import devReducer from './devReducer'
+import teamReducer from './teamReducer'
 import projectReducer from './projectReducer'
 import notificatioReducer from './notificationReducer'
 import settingReducer from './settingReducer'
@@ -17,6 +18,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     user: userReducer,
     dev: devReducer,
+    team: teamReducer,
     project: projectReducer,
     notification: notificatioReducer,
     setting: settingReducer,

@@ -2,7 +2,8 @@ import { useMutation } from '@apollo/client'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ACCEPT_INVITE, REJECT_INVITE } from '../../../../../graphql/gql/dev/mutation'
-import { FETCH_COLLEAGUES, FETCH_PENDING_INVITES_RESPOND } from '../../../../../graphql/gql/dev/query'
+import { COLLEAGUES } from '../../../../../graphql/queries/dev/ColleaguesQuery'
+import { PENDING_INVITES_RESPOND } from '../../../../../graphql/queries/dev/PendingInvitesRespondQuery'
 import Mutual from '../Shared/Mutual'
 
 const Respond = ({ respond, myInfo }) => {
@@ -15,11 +16,11 @@ const Respond = ({ respond, myInfo }) => {
     const [acceptInvite] = useMutation(ACCEPT_INVITE, {
         update(proxy, result) {
             const data = proxy.readQuery({
-                query: FETCH_COLLEAGUES,
+                query: COLLEAGUES,
             });
             if(data) {
                 proxy.writeQuery({
-                    query: FETCH_COLLEAGUES,
+                    query: COLLEAGUES,
                     data: {
                         colleagues: [
                             result.data.acceptInvite, ...data.colleagues
@@ -37,11 +38,11 @@ const Respond = ({ respond, myInfo }) => {
     const [rejectInvite] = useMutation(REJECT_INVITE, {
         update(proxy, result) {
             const data = proxy.readQuery({
-                query: FETCH_PENDING_INVITES_RESPOND,
+                query: PENDING_INVITES_RESPOND,
             });
             if(data) {
                 proxy.writeQuery({
-                    query: FETCH_PENDING_INVITES_RESPOND,
+                    query: PENDING_INVITES_RESPOND,
                     data: {
                         pendingInvitesRespond: [
                             ...data.pendingInvitesRespond.filter(res => res._id !== result.data.rejectInvite._id)

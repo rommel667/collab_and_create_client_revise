@@ -1,8 +1,8 @@
 const initialState = {
     colleagues: [],
     suggestions: [],
-    pendingRequest: [],
-    pendingRespond: [],
+    pendingInvitesRequest: [],
+    pendingInvitesRespond: [],
 
     recentInvites: [],
     recentAccepts: [],
@@ -11,7 +11,7 @@ const initialState = {
 
 const dev = (state = initialState, action) => {
     switch (action.type) {
-        case "FETCH_COLLEAGUES": {
+        case "COLLEAGUES": {
             return {
                 ...state,
                 colleagues: action.payload.colleagues
@@ -19,7 +19,7 @@ const dev = (state = initialState, action) => {
         }
 
         //SUGGESTIONS
-        case "FETCH_SUGGESTIONS": {
+        case "SUGGESTIONS": {
             return {
                 ...state,
                 suggestions: action.payload.suggestions
@@ -39,10 +39,10 @@ const dev = (state = initialState, action) => {
         }
 
         //INVITE REQUEST
-        case "FETCH_PENDING_INVITES_REQUEST": {
+        case "PENDING_INVITES_REQUEST": {
             return {
                 ...state,
-                pendingRequest: action.payload.pendingInvitesRequest
+                pendingInvitesRequest: action.payload.pendingInvitesRequest
             }
         }
         case "CANCEL_REQUEST_ON_PENDING": {
@@ -53,10 +53,10 @@ const dev = (state = initialState, action) => {
         }
 
         //INVITE RESPOND
-        case "FETCH_PENDING_INVITES_RESPOND": {
+        case "PENDING_INVITES_RESPOND": {
             return {
                 ...state,
-                pendingRespond: action.payload.pendingInvitesRespond
+                pendingInvitesRespond: action.payload.pendingInvitesRespond
             }
         }
         case "RESPOND_ACCEPT_INVITE": {

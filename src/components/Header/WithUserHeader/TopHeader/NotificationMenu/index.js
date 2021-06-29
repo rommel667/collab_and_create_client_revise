@@ -14,13 +14,13 @@ const Notification = () => {
 
     const [show, setShow] = useState(false)
 
-    const { loading, data } = useQuery(
-        FETCH_PROJECT_INVITES,
-        {
-            onCompleted() {
-                dispatch({ type: "FETCH_PROJECT_INVITES", payload: data.unconfirmProjectInvites })
-            }
-        })
+    // const { loading, data } = useQuery(
+    //     FETCH_PROJECT_INVITES,
+    //     {
+    //         onCompleted() {
+    //             dispatch({ type: "FETCH_PROJECT_INVITES", payload: data.unconfirmProjectInvites })
+    //         }
+    //     })
 
 
     return (

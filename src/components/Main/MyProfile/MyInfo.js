@@ -7,10 +7,9 @@ const MyInfo = ({ myInfo }) => {
     useEffect(() => {
         const skills = myInfo.skills.map((skill, index) => {
             return (
-                <p>{index + 1}. {skill}</p>
+                <p key={index}>{index + 1}. {skill}</p>
             )
         })
-        console.log("SKILLS", skills);
         setMySkills(skills)
     }, [myInfo])
 

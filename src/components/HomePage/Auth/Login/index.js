@@ -9,9 +9,9 @@ import { LOGIN_USER } from '../../../../graphql/gql/user/mutation'
 
 const Login = () => {
 
-    const [ formState, setFormState ] = useState({ email: "", password: "" })
-    const [ rememberMe, setRememberMe ] = useState(false)
-    const [ error, setError ] = useState("")
+    const [formState, setFormState] = useState({ email: "", password: "" })
+    const [rememberMe, setRememberMe] = useState(false)
+    const [error, setError] = useState("")
 
     const dispatch = useDispatch()
 
@@ -26,7 +26,7 @@ const Login = () => {
             email: formState.email, password: formState.password
         },
         onError(err) {
-          setError(err.graphQLErrors[0].message.split(': ')[1]);
+            setError(err.graphQLErrors[0].message.split(': ')[1]);
         }
     })
 
@@ -48,6 +48,8 @@ const Login = () => {
 
     return (
         <div className="bg-white min-h-screen flex justify-center py-12 px-4 sm:px-6 lg:px-8">
+
+
             <div className="max-w-md w-full space-y-8">
 
                 <AuthHeader

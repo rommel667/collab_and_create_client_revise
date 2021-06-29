@@ -1,12 +1,16 @@
 import React from 'react'
-import ProjectsInitialQuery from './ProjectsInitialQuery'
-import MyInfoQuery from './MyInfoQuery'
+import MyInfoQuery from '../../queries/user/MyInfoQuery'
+import ProjectsByUserQuery from '../../queries/project/ProjectsByUserQuery'
+import VerifiedTeamsQuery from '../../queries/dev/VerifiedTeamsQuery'
+import ColleaguesQuery from '../../queries/dev/ColleaguesQuery'
 
 const InitialQueryProvider = () => {
     return (
         <>
-            <ProjectsInitialQuery/>
-            <MyInfoQuery/>
+            <MyInfoQuery />
+            <ProjectsByUserQuery />
+            <VerifiedTeamsQuery />
+            <ColleaguesQuery />
         </>
     )
 }

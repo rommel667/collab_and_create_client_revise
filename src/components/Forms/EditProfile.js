@@ -5,9 +5,6 @@ import Input from '../SharedComponents/Input';
 
 const EditProfile = ({ formState, skills, addSkill, onChangeInput, photo, setImage }) => {
 
-
-    
-
     return (
         <div>
 
