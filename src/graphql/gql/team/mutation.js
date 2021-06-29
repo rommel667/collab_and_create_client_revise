@@ -33,3 +33,18 @@ mutation newTeam(
 }
 
 `
+
+//returns user just for confirmation
+export const ACCEPT_TEAM_INVITE = gql`
+mutation acceptTeamInvite(
+    $teamId: ID!
+) {
+  acceptTeamInvite(teamId: $teamId) {
+    teamId
+    user {
+      _id
+    }
+  }
+}
+
+`

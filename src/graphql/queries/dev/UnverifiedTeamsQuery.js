@@ -30,6 +30,12 @@ export const UNVERIFIED_TEAMS = gql`
             _id
             name
             photo
+            verifiedTeams {
+            _id
+            }
+            unverifiedTeams {
+            _id
+            }
         }
         }
     }

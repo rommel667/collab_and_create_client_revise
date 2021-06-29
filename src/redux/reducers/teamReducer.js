@@ -22,6 +22,14 @@ const team = (state = initialState, action) => {
                 verifiedTeams: [ action.payload.newTeam, ...state.verifiedTeams ]
             }
         }
+        case "ACCEPT_TEAM_INVITE": {
+            const newTeam = state.unverifiedTeams.find(t => t._id === action.payload.teamId)
+            return {
+                ...state,
+                verifiedTeams: [ newTeam, ...state.verifiedTeams ],
+                unverifiedTeams: [ ...state.unverifiedTeams.filter(t => t._id !== action.payload.teamId) ]
+            }
+        }
         case "UNVERIFIED_TEAMS": {
             return {
                 ...state,
@@ -58,6 +66,15 @@ const team = (state = initialState, action) => {
             return {
                 ...state,
                 unverifiedTeams: [ action.payload.newTeam, ...state.unverifiedTeams ]
+            }
+        }
+        case "ACCEPT_TEAM_INVITE_SUBSCRIPTION": {
+
+            return {
+                ...state,
+                verifiedTeams: action.payload.verified ? [ ...action.payload.verified ] : [ ...state.verifiedTeams ],
+                unverifiedTeams: action.payload.unverified ? [ ...action.payload.unverified ] : [ ...state.unverifiedTeams ]
+
             }
         }
         default: {
