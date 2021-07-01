@@ -3,7 +3,7 @@ import Team from './Team'
 
 const MyTeams = ({ verifiedTeams }) => {
     return (
-        <div>
+        <div className="space-y-3">
             {verifiedTeams.map(team => {
                 return (
                     <Team key={team._id} team={team} />

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { CANCEL_REQUEST } from '../../../../../graphql/gql/dev/mutation'
 import Mutual from '../Shared/Mutual'
 
-const Request = ({ request, myInfo }) => {
+const Request = ({ request, colleagues }) => {
 
     const dispatch = useDispatch()
 
@@ -22,13 +22,13 @@ const Request = ({ request, myInfo }) => {
 
     useEffect(() => {
         const mutualColleagues = request?.colleagues.map(rc => {
-            if (myInfo?.colleagues.some(mc => mc._id === rc._id)) {
+            if (colleagues.some(mc => mc._id === rc._id)) {
                 return rc
             }
             return null
         }).filter(rc => rc !== null)
         setMutual(mutualColleagues)
-    }, [myInfo, request])
+    }, [colleagues, request])
 
     return (
         <div key={request._id} className="flex items-center gap-3 border-2 p-3">

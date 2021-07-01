@@ -8,7 +8,7 @@ const MyColleagues = ({ colleagues, myInfo }) => {
         <div>My Colleagues</div>
             {colleagues.map(col => {
                 return (
-                    <Colleague key={col._id} col={col} myInfo={myInfo} />
+                    <Colleague key={col._id} col={col} colleagues={colleagues} />
                 )
             })}
         </div>

@@ -33,12 +33,12 @@ const Colleagues = () => {
             {show === "colleagues" &&
                 <div className="flex gap-2">
                     <MyColleagues colleagues={colleagues} myInfo={myInfo} />
-                    <Suggestions suggestions={suggestions} myInfo={myInfo} />
+                    <Suggestions suggestions={suggestions} colleagues={colleagues} />
                 </div>}
             {show === "invites" &&
                 <div className="flex gap-2">
-                    <PendingRespond pendingRespond={pendingInvitesRespond} myInfo={myInfo} />
-                    <PendingRequest pendingRequest={pendingInvitesRequest} myInfo={myInfo} />
+                    <PendingRespond pendingRespond={pendingInvitesRespond} colleagues={colleagues} />
+                    <PendingRequest pendingRequest={pendingInvitesRequest} colleagues={colleagues} />
                 </div>}
         </div>
     )

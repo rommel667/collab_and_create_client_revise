@@ -29,6 +29,10 @@ const RejectInviteSubscription = ({ user }) => {
                                     verifiedTeams: subscriptionData.data.acceptNewInvite.user.verifiedTeams,
                                     unverifiedTeams: subscriptionData.data.acceptNewInvite.user.unverifiedTeams,
                                 }
+                            } else {
+                                return {
+                                    ...member
+                                }
                             }
                         })
                         const newData = [ updateTeam, ...filteredTeam ]
@@ -56,7 +60,9 @@ const RejectInviteSubscription = ({ user }) => {
                                     ...member,
                                     verifiedTeams: subscriptionData.data.acceptNewInvite.user.verifiedTeams,
                                     unverifiedTeams: subscriptionData.data.acceptNewInvite.user.unverifiedTeams,
-                                }
+                                } 
+                            } else {
+                                return { ...member }
                             }
                         })
                         const newData = [ updateTeam, ...filteredTeam ]

@@ -6,7 +6,7 @@ import { COLLEAGUES } from '../../../../../graphql/queries/dev/ColleaguesQuery'
 import { PENDING_INVITES_RESPOND } from '../../../../../graphql/queries/dev/PendingInvitesRespondQuery'
 import Mutual from '../Shared/Mutual'
 
-const Respond = ({ respond, myInfo }) => {
+const Respond = ({ respond, colleagues }) => {
 
     const dispatch = useDispatch()
     const { recentAccepts } = useSelector(state => state.dev)
@@ -61,13 +61,13 @@ const Respond = ({ respond, myInfo }) => {
     useEffect(() => {
         console.log("RERENDER", respond);
         const mutualColleagues = respond?.colleagues.map(rc => {
-            if (myInfo?.colleagues.some(mc => mc._id === rc._id)) {
+            if (colleagues.some(mc => mc._id === rc._id)) {
                 return rc
             }
             return null
         }).filter(rc => rc !== null)
         setMutual(mutualColleagues)
-    }, [myInfo, respond])
+    }, [colleagues, respond])
 
     return (
         <div key={respond._id} className="flex items-center gap-3 border-2 p-3">

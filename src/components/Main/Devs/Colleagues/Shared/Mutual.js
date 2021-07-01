@@ -2,18 +2,30 @@ import React from 'react'
 
 const Mutual = ({ mutual }) => {
     return (
-        <div className="flex items-center gap-2">
-            <div className={`${mutual?.length === 0 ? "hidden" : ""} flex items-center gap-1 ml-3`}>
+        <div className="flex items-center gap-1">
+            <div className={`${mutual?.length === 0 ? "hidden" : ""} flex items-center `}>
                 {mutual?.map((m, i) => {
                     if (i < 4) {
-                        return (
+                        if(i === 0) {
+                            return (
                             <img
                                 key={m._id}
-                                className="h-6 w-6 rounded-full object-cover border-2 border-white -ml-3"
+                                className="h-6 w-6 rounded-full object-cover border-2 border-white"
                                 src={m.photo}
                                 alt=""
                             />
                         )
+                        } else {
+                            return (
+                            <img
+                                key={m._id}
+                                className="h-6 w-6 rounded-full object-cover border-2 border-white -ml-2"
+                                src={m.photo}
+                                alt=""
+                            />
+                        )
+                        }
+                        
                     }
                     return null
                 })}

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { CANCEL_REQUEST, SEND_INVITE } from '../../../../../graphql/gql/dev/mutation'
 import Mutual from '../Shared/Mutual'
 
-const Suggestion = ({ suggestion, myInfo }) => {
+const Suggestion = ({ suggestion, colleagues }) => {
 
     const dispatch = useDispatch()
     const { recentInvites } = useSelector(state => state.dev)
@@ -32,14 +32,14 @@ const Suggestion = ({ suggestion, myInfo }) => {
 
     useEffect(() => {
         const mutualColleagues = suggestion?.colleagues.map(sc => {
-            if (myInfo?.colleagues.some(mc => mc._id === sc._id)) {
+            if (colleagues.some(mc => mc._id === sc._id)) {
                 return sc
             }
             return null
         }).filter(sc => sc !== null)
         console.log(mutualColleagues);
         setMutual(mutualColleagues)
-    }, [myInfo, suggestion])
+    }, [colleagues, suggestion])
 
     return (
         <div key={suggestion._id} className="flex items-center gap-3 border-2 p-3">

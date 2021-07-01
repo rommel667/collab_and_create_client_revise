@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import Mutual from '../Shared/Mutual'
 
-const Colleague = ({ col, myInfo }) => {
+const Colleague = ({ col, colleagues }) => {
 
     const [mutual, setMutual] = useState(null)
 
     useEffect(() => {
         const mutualColleagues = col?.colleagues.map(cc => {
-            if (myInfo?.colleagues.some(mc => mc._id === cc._id)) {
+            if (colleagues.some(mc => mc._id === cc._id)) {
                 return cc
             }
             return null
         }).filter(cc => cc !== null)
-        console.log(mutualColleagues);
         setMutual(mutualColleagues)
-    }, [myInfo, col])
+    }, [colleagues])
 
     return (
         <div key={col._id} className="flex items-center gap-3 border-2 p-3">

@@ -69,12 +69,10 @@ const team = (state = initialState, action) => {
             }
         }
         case "ACCEPT_TEAM_INVITE_SUBSCRIPTION": {
-
             return {
                 ...state,
-                verifiedTeams: action.payload.verified ? [ ...action.payload.verified ] : [ ...state.verifiedTeams ],
-                unverifiedTeams: action.payload.unverified ? [ ...action.payload.unverified ] : [ ...state.unverifiedTeams ]
-
+                verifiedTeams: action.payload.updateVerified ? [ ...action.payload.updateVerified ] : [ ...state.verifiedTeams ],
+                unverifiedTeams: action.payload.updateUnverified ? [ ...action.payload.updateUnverified ] : [ ...state.unverifiedTeams ]
             }
         }
         default: {
