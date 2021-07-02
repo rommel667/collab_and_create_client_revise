@@ -42,7 +42,7 @@ const Suggestion = ({ suggestion, colleagues }) => {
     }, [colleagues, suggestion])
 
     return (
-        <div key={suggestion._id} className="flex items-center gap-3 border-2 p-3">
+        <div key={suggestion._id} className="flex items-center gap-3 shadow-md rounded-md p-3">
             <img
                 className="h-12 w-12 rounded-full object-cover"
                 src={suggestion.photo}

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMutation, useQuery } from '@apollo/client';
-import MyColleagues from './MyColleagues';
+import MyColleagues from '../Devs/Colleagues/MyColleagues';
+import MyTeams from '../Devs/Teams/MyTeams';
 import { FaEdit } from "react-icons/fa";
 import ModalComponent from '../../SharedComponents/ModalComponent'
 import EditProfile from '../../Forms/EditProfile';
@@ -14,15 +15,16 @@ const MyProfile = () => {
     const dispatch = useDispatch()
     const { myInfo } = useSelector(state => state.user)
     const { colleagues } = useSelector(state => state.dev)
+    const { verifiedTeams } = useSelector(state => state.team)
 
     const [showEditProfile, setShowEditProfile] = useState(false)
 
-    const [formState, setFormState] = useState({ name: myInfo.name, portfolio: myInfo.portfolio, skill: "" })
+    const [formState, setFormState] = useState({ name: myInfo?.name, portfolio: myInfo?.portfolio, skill: "" })
 
-    const [photo, setPhoto] = useState(myInfo.photo)
-    const [skills, setSkills] = useState([...myInfo.skills])
+    const [photo, setPhoto] = useState(myInfo?.photo)
+    const [skills, setSkills] = useState(myInfo ? [...myInfo.skills] : null)
 
-    
+
 
     const cancelEditProfile = () => {
         setShowEditProfile(false)
@@ -83,7 +85,7 @@ const MyProfile = () => {
             <>
                 <ColleaguesQuery />
             </>
-            <div className="flex flex-row justify-between border-2 p-2">
+            <div className="flex flex-row justify-between shadow-md rounded-md p-2">
 
                 <MyInfo myInfo={myInfo} />
                 <FaEdit
@@ -92,13 +94,9 @@ const MyProfile = () => {
                     className="text-gray-500 cursor-pointer hover:text-gray-600"
                 />
             </div>
-            <div className="flex justify-between">
-                <div>
-                    <MyColleagues colleagues={colleagues} myInfo={myInfo} />
-                </div>
-                <div>
-                    <p>Teams</p>
-                </div>
+            <div className="flex justify-between w-full gap-4 mt-5">
+                <MyColleagues colleagues={colleagues} />
+                <MyTeams verifiedTeams={verifiedTeams} />
             </div>
 
             <ModalComponent

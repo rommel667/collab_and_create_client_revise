@@ -5,7 +5,7 @@ const Mutual = ({ mutual }) => {
         <div className="flex items-center gap-1">
             <div className={`${mutual?.length === 0 ? "hidden" : ""} flex items-center `}>
                 {mutual?.map((m, i) => {
-                    if (i < 4) {
+                    if (i < 3) {
                         if(i === 0) {
                             return (
                             <img

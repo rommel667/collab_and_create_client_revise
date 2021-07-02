@@ -29,6 +29,12 @@ const team = (state = initialState, action) => {
                 unverifiedTeams: [ ...state.unverifiedTeams.filter(t => t._id !== action.payload.teamInfo._id) ]
             }
         }
+        case "REJECT_TEAM_INVITE": {
+            return {
+                ...state,
+                unverifiedTeams: [ ...state.unverifiedTeams.filter(t => t._id !== action.payload.teamId) ]
+            }
+        }
         case "UNVERIFIED_TEAMS": {
             return {
                 ...state,

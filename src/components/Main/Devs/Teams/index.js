@@ -16,7 +16,7 @@ const Teams = () => {
                 <VerifiedTeamsQuery />
                 <UnverifiedTeamsQuery />
             </>
-            <div className="flex justify-between items-start">
+            <div className="flex justify-between items-start gap-4">
                 <MyTeams verifiedTeams={verifiedTeams} />
                 <UnverifiedTeams unverifiedTeams={unverifiedTeams} />
             </div>

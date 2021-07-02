@@ -25,15 +25,15 @@ const Team = ({ team }) => {
     }, [team])
 
     return (
-        <div>
-            <p>Team Name: {team.teamName}</p>
-            <p>Created By: {team.createdBy.name}</p>
-            
-            <MembersStatus categoryText="Members:" members={verifiedMembers} />
+        <div className="p-2 shadow-md rounded-md">
+            <p className="text-base font-semibold">{team.teamName}</p>
+            <p className="text-xs">Created By: {team.createdBy.name}</p>
 
-            <MembersStatus categoryText="Pending:" members={unverifiedMembers} />
+            <div className="flex justify-between">
+                <MembersStatus categoryText="Members" members={verifiedMembers} />
+                <MembersStatus categoryText="Pending" members={unverifiedMembers} />
+            </div>
 
-            
         </div>
     )
 }

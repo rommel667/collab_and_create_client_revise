@@ -31,7 +31,7 @@ const Request = ({ request, colleagues }) => {
     }, [colleagues, request])
 
     return (
-        <div key={request._id} className="flex items-center gap-3 border-2 p-3">
+        <div key={request._id} className="flex items-center gap-3 shadow-md rounded-md p-3">
             <img
                 className="h-12 w-12 rounded-full object-cover"
                 src={request.photo}
