@@ -5,6 +5,7 @@ import CancelRequestSubscription from '../../subscriptions/dev/CancelRequestSubs
 import RejectInviteSubscription from '../../subscriptions/dev/RejectInviteSubscription'
 import NewTeamSubscription from '../../subscriptions/dev/NewTeamSubscription'
 import AcceptTeamInviteSubscription from '../../subscriptions/dev/AcceptTeamInviteSubscription'
+import RejectTeamInviteSubscription from '../../subscriptions/dev/RejectTeamInviteSubscription'
 import { useSelector } from 'react-redux'
 
 
@@ -19,6 +20,7 @@ const SubscriptionProvider = () => {
             <AcceptInviteSubscription user={user} />
             <RejectInviteSubscription user={user} />
             <AcceptTeamInviteSubscription user={user} />
+            <RejectTeamInviteSubscription user={user} />
             <NewTeamSubscription user={user} />
         </>
     )

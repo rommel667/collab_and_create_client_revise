@@ -85,6 +85,18 @@ const team = (state = initialState, action) => {
                 unverifiedTeams: action.payload.unverifiedTeams
             }
         }
+        case "REJECT_TEAM_INVITE_SUBSCRIPTION_UPDATE_VERIFIED": {
+            return {
+                ...state,
+                verifiedTeams: action.payload.verifiedTeams
+            }
+        }
+        case "REJECT_TEAM_INVITE_SUBSCRIPTION_UPDATE_UNVERIFIED": {
+            return {
+                ...state,
+                unverifiedTeams: action.payload.unverifiedTeams
+            }
+        }
         default: {
             return state;
         }
