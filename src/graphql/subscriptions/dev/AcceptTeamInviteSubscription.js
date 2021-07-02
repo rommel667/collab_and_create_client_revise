@@ -1,12 +1,11 @@
 import { useSubscription } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import { gql } from 'graphql-tag'
-import { PENDING_INVITES_REQUEST } from "../../queries/dev/PendingInvitesRequestQuery";
 import { VERIFIED_TEAMS } from "../../queries/dev/VerifiedTeamsQuery";
 import { UNVERIFIED_TEAMS } from "../../queries/dev/UnverifiedTeamsQuery";
 
 
-const RejectInviteSubscription = ({ user }) => {
+const AcceptTeamInviteSubscription = ({ user }) => {
 
     const dispatch = useDispatch()
     const { verifiedTeams, unverifiedTeams } = useSelector(state => state.team)
@@ -15,19 +14,19 @@ const RejectInviteSubscription = ({ user }) => {
         {
             variables: { userId: user?._id },
             onSubscriptionData: ({ client, subscriptionData }) => {
-                if(verifiedTeams.some(team => team._id === subscriptionData.data.acceptNewInvite.teamId)) {
+                console.log("ATIS", subscriptionData.data.acceptTeamInvite);
+                if(verifiedTeams.some(team => team._id === subscriptionData.data.acceptTeamInvite.teamId)) {
                     const data = client.readQuery({
                         query: VERIFIED_TEAMS,
                     });
                     if (data) {
-                        const filteredTeam = data.verifiedTeams.filter(team => team._id !== subscriptionData.data.acceptNewInvite.teamId)
-                        const targetTeam = data.verifiedTeams.find(team => team._id === subscriptionData.data.acceptNewInvite.teamId)
-                        const updateTeam = targetTeam.members.map(member => {
-                            if(member._id === subscriptionData.data.acceptNewInvite.user._id) {
+                        const targetTeam = data.verifiedTeams.find(team => team._id === subscriptionData.data.acceptTeamInvite.teamId)
+                        const updateTeamMembers = targetTeam.members.map(member => {
+                            if(member._id === subscriptionData.data.acceptTeamInvite.user._id) {
                                 return {
                                     ...member,
-                                    verifiedTeams: subscriptionData.data.acceptNewInvite.user.verifiedTeams,
-                                    unverifiedTeams: subscriptionData.data.acceptNewInvite.user.unverifiedTeams,
+                                    verifiedTeams: subscriptionData.data.acceptTeamInvite.user.verifiedTeams,
+                                    unverifiedTeams: subscriptionData.data.acceptTeamInvite.user.unverifiedTeams,
                                 }
                             } else {
                                 return {
@@ -35,7 +34,13 @@ const RejectInviteSubscription = ({ user }) => {
                                 }
                             }
                         })
-                        const newData = [ updateTeam, ...filteredTeam ]
+                        const newData = data.verifiedTeams.map(team => {
+                            if(team._id === subscriptionData.data.acceptTeamInvite.teamId) {
+                                return { ...targetTeam, members: updateTeamMembers }
+                            } else {
+                                return { ...team }
+                            }
+                        })
                         client.writeQuery({
                             query: VERIFIED_TEAMS,
                             data: {
@@ -43,29 +48,35 @@ const RejectInviteSubscription = ({ user }) => {
                             }
                         });
                         dispatch({
-                            type: "ACCEPT_TEAM_INVITE_SUBSCRIPTION", payload: { updateVerified: newData }
+                            type: "ACCEPT_TEAM_INVITE_SUBSCRIPTION_UPDATE_VERIFIED", payload: { verifiedTeams: newData }
                         })
                     }  
                 }
-                if(unverifiedTeams.some(team => team._id === subscriptionData.data.acceptNewInvite.teamId)) {
+                if(unverifiedTeams.some(team => team._id === subscriptionData.data.acceptTeamInvite.teamId)) {
                     const data = client.readQuery({
                         query: UNVERIFIED_TEAMS,
                     });
                     if (data) {
-                        const filteredTeam = data.verifiedTeams.filter(team => team._id !== subscriptionData.data.acceptNewInvite.teamId)
-                        const targetTeam = data.verifiedTeams.find(team => team._id === subscriptionData.data.acceptNewInvite.teamId)
-                        const updateTeam = targetTeam.members.map(member => {
-                            if(member._id === subscriptionData.data.acceptNewInvite.user._id) {
+                        const targetTeam = data.unverifiedTeams.find(team => team._id === subscriptionData.data.acceptTeamInvite.teamId)
+                        const updateTeamMembers = targetTeam.members.map(member => {
+                            if(member._id === subscriptionData.data.acceptTeamInvite.user._id) {
                                 return {
                                     ...member,
-                                    verifiedTeams: subscriptionData.data.acceptNewInvite.user.verifiedTeams,
-                                    unverifiedTeams: subscriptionData.data.acceptNewInvite.user.unverifiedTeams,
+                                    verifiedTeams: subscriptionData.data.acceptTeamInvite.user.verifiedTeams,
+                                    unverifiedTeams: subscriptionData.data.acceptTeamInvite.user.unverifiedTeams,
                                 } 
                             } else {
                                 return { ...member }
                             }
                         })
-                        const newData = [ updateTeam, ...filteredTeam ]
+                        const newData = data.unverifiedTeams.map(team => {
+                            if(team._id === subscriptionData.data.acceptTeamInvite.teamId) {
+                                return { ...targetTeam, members: updateTeamMembers }
+                            } else {
+                                return { ...team }
+                            }
+                        })
+                      
                         client.writeQuery({
                             query: UNVERIFIED_TEAMS,
                             data: {
@@ -73,7 +84,7 @@ const RejectInviteSubscription = ({ user }) => {
                             }
                         });
                         dispatch({
-                            type: "ACCEPT_TEAM_INVITE_SUBSCRIPTION", payload: { updateUnverified: newData }
+                            type: "ACCEPT_TEAM_INVITE_SUBSCRIPTION_UPDATE_UNVERIFIED", payload: { unverifiedTeams: newData }
                         })
                     }  
                 }
@@ -105,4 +116,4 @@ export const ACCEPT_TEAM_INVITE_SUBSCRIPTION = gql`
 `;
 
 
-export default RejectInviteSubscription
+export default AcceptTeamInviteSubscription

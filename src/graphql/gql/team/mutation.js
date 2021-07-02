@@ -43,6 +43,14 @@ mutation acceptTeamInvite(
     teamId
     user {
       _id
+      name
+      photo
+      verifiedTeams {
+      _id
+      }
+      unverifiedTeams {
+      _id
+      }
     }
   }
 }

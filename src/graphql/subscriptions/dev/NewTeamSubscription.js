@@ -48,9 +48,15 @@ export const NEW_TEAM_SUBSCRIPTION = gql`
           photo
         }
         members {
-          _id
-          name
-          photo
+            _id
+            name
+            photo
+            verifiedTeams {
+            _id
+            }
+            unverifiedTeams {
+            _id
+            }
         }
     }
   }

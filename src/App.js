@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 import Main from './components/Main';
 import SubscriptionProvider from './graphql/hoc/SubscriptionProvider';
 
+
 const App = () => {
 
   const { user } = useSelector(state => state.user)
