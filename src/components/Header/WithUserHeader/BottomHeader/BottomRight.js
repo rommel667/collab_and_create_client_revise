@@ -1,9 +1,21 @@
 import React from 'react'
 import { useLocation } from 'react-router'
 
-const BottomRight = ({ openModalHandler }) => {
+const BottomRight = ({ setOpenNewTeamModal, setOpenNewProjectModal, setOpenNewTaskColumnModal }) => {
 
     const location = useLocation()
+
+    const openModalHandler = () => {
+        if (location.pathname.split('/')[2] === "teams") {
+            setOpenNewTeamModal()
+        }
+        if (location.pathname.split('/')[1] === "projects") {
+            setOpenNewProjectModal()
+        }
+        if (location.pathname.split('/')[1] === "tasks") {
+            setOpenNewTaskColumnModal()
+        }
+    }
 
     return (
         <div className="flex items-center gap-1">
@@ -15,6 +27,8 @@ const BottomRight = ({ openModalHandler }) => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
                 {location.pathname.split('/')[2] === "teams" && "New Team"}
+                {location.pathname.split('/')[1] === "projects" && "New Project"}
+                {location.pathname.split('/')[1] === "tasks" && "Add Column"}
             </button>
         </div>
     )

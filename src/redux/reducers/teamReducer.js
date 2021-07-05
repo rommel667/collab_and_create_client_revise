@@ -1,10 +1,6 @@
 const initialState = {
     verifiedTeams: [],
     unverifiedTeams: [],
-    newTeamForm: {
-        teamName: "",
-        members: []
-    }
 }
 
 
@@ -41,32 +37,7 @@ const team = (state = initialState, action) => {
                 unverifiedTeams: action.payload.unverifiedTeams
             }
         }
-        case "ON_CHANGE_INPUT_TEAM_NAME": {
-            return {
-                ...state,
-                newTeamForm: {
-                    ...state.newTeamForm,
-                    teamName: action.payload.value
-                }
-            }
-        }
-        case "ON_CHANGE_INPUT_TEAM_MEMBERS": {
-            return {
-                ...state,
-                newTeamForm: {
-                    ...state.newTeamForm,
-                    members: action.payload.items
-                }
-            }
-        }
-        case "RESET_NEW_TEAM_FORM": {
-            return {
-                ...state,
-                newTeamForm: {
-                    ...initialState.newTeamForm
-                }
-            }
-        }
+        
         case "NEW_TEAM_SUBSCRIPTION": {
             return {
                 ...state,

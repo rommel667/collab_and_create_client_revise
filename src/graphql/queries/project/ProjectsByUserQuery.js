@@ -4,18 +4,16 @@ import { gql } from 'graphql-tag';
 
 const ProjectsByUserQuery = () => {
 
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-    const { data } = useQuery(
-        PROJECTS_BY_USER,
-        {
-            onCompleted: () => {
-              console.log("PROJECTS_BY_USER DISPATCH");
-                dispatch({ type: "PROJECTS_BY_USER", payload: { projects: data.projectsByUser } })
-            }
-        })
-   
-    return null
+  const { data } = useQuery(
+    PROJECTS_BY_USER,
+    {
+      onCompleted: () => {
+        dispatch({ type: "PROJECTS_BY_USER", payload: { projects: data.projectsByUser } })
+      }
+    })
+  return null
 }
 
 export const PROJECTS_BY_USER = gql`
@@ -42,6 +40,7 @@ query projectsByUser {
         updatedAt
         taskColumns {
           _id
+          sequence
           tasks {
             _id
             createdBy {

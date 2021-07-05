@@ -8,6 +8,7 @@ import teamReducer from './teamReducer'
 import projectReducer from './projectReducer'
 import notificatioReducer from './notificationReducer'
 import settingReducer from './settingReducer'
+import formReducer from './formReducer'
 
 const persistConfig = {
     key: 'root',
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
     project: projectReducer,
     notification: notificatioReducer,
     setting: settingReducer,
+    form: formReducer,
 })
 
 export default persistReducer(persistConfig, rootReducer)

@@ -7,7 +7,7 @@ const NewTeam = () => {
 
     const dispatch = useDispatch()
     const { colleagues } = useSelector(state => state.dev)
-    const { newTeamForm } = useSelector(state => state.team)
+    const { newTeam } = useSelector(state => state.form)
 
     const memberOptions = colleagues.map(col => {
         return { label: col.name, value: col._id }
@@ -26,13 +26,13 @@ const NewTeam = () => {
             <p className="text-sm text-gray-500">Team Members</p>
             <MultiSelect
                 options={memberOptions}
-                value={newTeamForm.members}
+                value={newTeam.members}
                 onChange={onChangeMembers}
                 labelledBy="Team Members"
                 className="mb-5"
             />
             <Input
-                value={newTeamForm.teamName}
+                value={newTeam.teamName}
                 onChange={onChangeInput}
                 id="teamName"
                 name="teamName"

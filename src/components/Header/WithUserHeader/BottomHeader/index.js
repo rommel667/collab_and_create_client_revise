@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import BottomLeft from './BottomLeft'
 import BottomRight from './BottomRight'
 import ModalComponent from '../../../SharedComponents/ModalComponent'
 import NewTeam from '../../../Forms/NewTeam'
+import NewProject from '../../../Forms/NewProject'
+import NewTaskColumn from '../../../Forms/NewTaskColumn'
 import { useMutation } from '@apollo/client'
 import { NEW_TEAM } from '../../../../graphql/gql/team/mutation'
 import { VERIFIED_TEAMS } from '../../../../graphql/queries/dev/VerifiedTeamsQuery'
+import { NEW_PROJECT } from '../../../../graphql/gql/project/mutation'
+import { NEW_TASK_COLUMN } from '../../../../graphql/gql/task/mutation'
 
 
 
@@ -17,16 +21,30 @@ const BottomHeader = () => {
 
     const dispatch = useDispatch()
 
-    const { newTeamForm } = useSelector(state => state.team)
+    const { projectId } = useParams()
+
+    const { newTeam, newProject, newTaskColumn } = useSelector(state => state.form)
 
     const [openNewTeamModal, setOpenNewTeamModal] = useState(false)
+    const [openNewProjectModal, setOpenNewProjectModal] = useState(false)
+    const [openNewTaskColumnModal, setOpenNewTaskColumnModal] = useState(false)
 
     const cancelNewTeam = () => {
         setOpenNewTeamModal(false)
-        dispatch({ type: "RESET_NEW_TEAM_FORM" })
+        dispatch({ type: "RESET_FORM" })
     }
 
-    const [newTeam, { data: newTeamData, loading: newTeamLoading }] = useMutation(NEW_TEAM, {
+    const cancelNewProject = () => {
+        setOpenNewProjectModal(false)
+        dispatch({ type: "RESET_FORM" })
+    }
+
+    const cancelNewTaskColumn = () => {
+        setOpenNewTaskColumnModal(false)
+        dispatch({ type: "RESET_FORM" })
+    }
+
+    const [confirmNewTeam] = useMutation(NEW_TEAM, {
         update(proxy, result) {
             const data = proxy.readQuery({
                 query: VERIFIED_TEAMS,
@@ -45,7 +63,7 @@ const BottomHeader = () => {
             }
         },
         variables: {
-            teamName: newTeamForm.teamName, members: newTeamForm.members.map(member => member.value)
+            teamName: newTeam.teamName, members: newTeam.members.map(member => member.value)
         },
         onError(err) {
             // setError(err.graphQLErrors[0].message.split(': ')[1]);
@@ -53,11 +71,25 @@ const BottomHeader = () => {
         }
     })
 
-    const openModalHandler = () => {
-        if (location.pathname.split('/')[2] === "teams") {
-            setOpenNewTeamModal(true)
+    const [confirmNewProject] = useMutation(NEW_PROJECT, {
+        update(proxy, result) {
+            cancelNewProject()
+            dispatch({ type: "NEW_PROJECT", payload: { newProject: result.data.newProject } })
+        },
+        variables: {
+            ...newProject,
+            unconfirmMembers: newProject.unconfirmMembers.map(member => member.value),
+            techStacks: newProject.techStacks.map(stack => stack.value),
         }
-    }
+    })
+
+    const [confirmNewTaskColumn] = useMutation(NEW_TASK_COLUMN, {
+        update(proxy, result) {
+            cancelNewTaskColumn()
+            dispatch({ type: "NEW_TASK_COLUMN", payload: { newTaskColumn: result.data.newTaskColumn } })
+        },
+        variables: { ...newTaskColumn }
+    })
 
 
 
@@ -66,7 +98,11 @@ const BottomHeader = () => {
 
             <BottomLeft />
 
-            <BottomRight openModalHandler={openModalHandler} />
+            <BottomRight
+                setOpenNewTeamModal={() => setOpenNewTeamModal(true)}
+                setOpenNewProjectModal={() => setOpenNewProjectModal(true)}
+                setOpenNewTaskColumnModal={() => setOpenNewTaskColumnModal(true)}
+            />
 
             <ModalComponent
                 open={openNewTeamModal}
@@ -74,11 +110,32 @@ const BottomHeader = () => {
                 cancel={cancelNewTeam}
                 modalTitle="New Team"
                 confirmButtonText="Confirm"
-                confirm={newTeam}
+                confirm={confirmNewTeam}
             >
                 <NewTeam />
             </ModalComponent>
 
+            <ModalComponent
+                open={openNewProjectModal}
+                onClose={cancelNewProject}
+                cancel={cancelNewProject}
+                modalTitle="New Project"
+                confirmButtonText="Confirm"
+                confirm={confirmNewProject}
+            >
+                <NewProject />
+            </ModalComponent>
+
+            <ModalComponent
+                open={openNewTaskColumnModal}
+                onClose={cancelNewTaskColumn}
+                cancel={cancelNewTaskColumn}
+                modalTitle="New Column"
+                confirmButtonText="Confirm"
+                confirm={confirmNewTaskColumn}
+            >
+                <NewTaskColumn />
+            </ModalComponent>
 
         </div>
     )

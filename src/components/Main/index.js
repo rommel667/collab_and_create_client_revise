@@ -7,11 +7,13 @@ import Devs from './Devs'
 import { Switch, Route, useLocation } from 'react-router-dom'
 import InitialQueryProvider from '../../graphql/hoc/InitialQueryProvider'
 import MyProfile from './MyProfile'
+import { useSelector } from 'react-redux'
 
 const Main = ({ user }) => {
 
     const history = useHistory()
     const location = useLocation()
+    const { projects } = useSelector(state => state.project)
 
     useEffect(() => {
         if (!user) {
@@ -23,15 +25,14 @@ const Main = ({ user }) => {
         <main className={`${location.pathname.split('/')[1] === "tasks" ? "overflow-hidden flex-1" : "overflow-auto"} p-3`}>
             <InitialQueryProvider />
             <Switch>
-
                 <Route path='/projects' render={(props) => (
                     <Projects {...props} />)}
                 />
                 <Route path='/tasks/:projectId' render={(props) => (
-                    <Tasks {...props} />)}
+                    projects && <Tasks {...props} />)}
                 />
                 <Route path='/notes/:projectId' render={(props) => (
-                    <Notes {...props} />)}
+                    projects && <Notes {...props} />)}
                 />
                 <Route exact path='/devs/:devPage' render={(props) => (
                     <Devs {...props} />)}
