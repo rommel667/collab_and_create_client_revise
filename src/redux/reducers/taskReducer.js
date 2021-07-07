@@ -42,6 +42,18 @@ const task = (state = initialState, action) => {
                 }) ]
             }
         }
+        case "DELETE_TASK_COLUMN": {
+            return {
+                ...state,
+                taskColumns: [ ...state.taskColumns.filter(col => col._id !== action.payload.columnId) ]
+            }
+        }
+        case "DELETE_TASK_COLUMN_SUBSCRIPTION": {
+            return {
+                ...state,
+                taskColumns: [ ...state.taskColumns.filter(col => col._id !== action.payload.columnId) ]
+            }
+        }
         case "NEW_TASK_COLUMN_SUBSCRIPTION": {
             return {
                 ...state,

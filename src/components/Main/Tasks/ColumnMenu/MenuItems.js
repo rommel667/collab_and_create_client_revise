@@ -7,7 +7,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-const MenuItems = ({ open, setOpenTaskColumnEdit }) => {
+const MenuItems = ({ open, setOpenTaskColumnEdit, setOpenTaskColumnDelete }) => {
 
     return (
 
@@ -48,6 +48,7 @@ const MenuItems = ({ open, setOpenTaskColumnEdit }) => {
                                 active ? 'bg-gray-100' : '',
                                 'px-2 py-1 text-xs text-gray-700 cursor-pointer flex items-center gap-2'
                             )}
+                            onClick={setOpenTaskColumnDelete}
                         >
                             <FaTrashAlt />
                             <p>Delete</p>

@@ -12,7 +12,7 @@ const Task = ({ description, photo, createdAt, isDragging }) => {
           src={photo} alt="profile" />
       </div>
       <div className="flex justify-between items-center mt-5">
-        <p className="text-sm text-gray-500 font-medium">{createdAt}</p>
+        <p className="text-sm text-gray-500 font-medium">{new Date(createdAt).toLocaleString()}</p>
       </div>
 
     </li>

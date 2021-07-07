@@ -118,3 +118,16 @@ mutation editTaskColumn(
 }
 
 `
+
+export const DELETE_TASK_COLUMN = gql`
+mutation deleteTaskColumn(
+    $columnId: ID!
+    $projectId: ID!
+) {
+    deleteTaskColumn( columnId: $columnId, projectId: $projectId ) {
+      _id
+      projectId
+    }
+}
+
+`
