@@ -16,10 +16,10 @@ const notification = (state = initialState, action) => {
             }
         }
         //From subscription
-        case "NEW_PROJECT_INVITE": {
+        case "NEW_PROJECT_INVITE_SUBSCRIPTION": {
             return {
                 ...state,
-                projectInvites: [ ...state.projectInvites, action.payload ]
+                projectInvites: [ action.payload.newProjectInvite, ...state.projectInvites,  ]
             }
         }
         case "ACCEPT_PROJECT_INVITE": {

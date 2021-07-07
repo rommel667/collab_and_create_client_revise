@@ -18,9 +18,25 @@ mutation newTaskColumn(
       }
       tasks {
         _id
+        description
+        columnId
+        createdBy {
+          _id
+          name
+          email
+          photo
+        }
+        inCharge {
+          _id
+          name
+          email
+          photo
+        }
+        createdAt
+        updatedAt
       }
       createdAt
-        updatedAt
+    	updatedAt
     }
 }
 
@@ -37,7 +53,7 @@ mutation newTask(
         _id
         description
         columnId
-        projectId,
+        projectId
         createdBy {
           _id
           name
@@ -64,6 +80,7 @@ mutation moveTaskColumn(
 ) {
     moveTaskColumn(taskColumnIds: $taskColumnIds, projectId: $projectId) {
       newSequenceIds
+      projectId
     }
 }
 
@@ -81,6 +98,7 @@ mutation moveTask(
       sourceColumnId
       destinationColumnId
       taskId
+      projectId
       }
 }
 

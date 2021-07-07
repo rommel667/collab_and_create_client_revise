@@ -9,6 +9,7 @@ import projectReducer from './projectReducer'
 import notificatioReducer from './notificationReducer'
 import settingReducer from './settingReducer'
 import formReducer from './formReducer'
+import taskReducer from './taskReducer'
 
 const persistConfig = {
     key: 'root',
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     dev: devReducer,
     team: teamReducer,
     project: projectReducer,
+    task: taskReducer,
     notification: notificatioReducer,
     setting: settingReducer,
     form: formReducer,

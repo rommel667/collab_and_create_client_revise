@@ -5,81 +5,47 @@ mutation acceptProjectInvite(
     $projectId: ID!
 ) {
     acceptProjectInvite(projectId: $projectId ) {
+      _id
+      projectName
+      description
+      status
+      techStacks
+      createdBy {
         _id
-        projectName
-        description
-        status
-        techStacks
-        createdBy {
+        name
+        email
+        photo
+      }
+      confirmedMembers {
+        _id
+        name
+        email
+        photo
+      }
+      createdAt
+      updatedAt
+      taskColumns {
+        _id
+        sequence
+        tasks {
           _id
-          name
-          photo
-        }
-        confirmedMembers {
+          createdBy {
             _id
-            name
-            email
-            photo
+          }
+          inCharge {
+            _id
+          }
         }
-        unconfirmMembers {
+      }
+      noteCategories {
+        _id
+        notes {
           _id
-          name
-          photo
+          createdBy {
+            _id
+          }
         }
-        taskColumns {
-            _id
-            columnName
-            sequence
-            createdBy {
-              _id
-              name
-              email
-              photo
-            }
-            tasks {
-              _id
-              description
-              createdBy {
-                _id
-                name
-                email
-                photo
-              }
-              inCharge {
-                _id
-                name
-                email
-                photo
-              }
-              createdAt
-              updatedAt
-            }
-          }
-          noteCategories {
-            _id
-            categoryName
-            sequence
-            createdBy {
-              _id
-              name
-              email
-              photo
-            }
-            notes {
-              _id
-              description
-              createdBy {
-                _id
-                name
-                email
-                photo
-              }
-              createdAt
-              updatedAt
-            }
-          }
-        createdAt
-        updatedAt
+      }
     }
 }
 

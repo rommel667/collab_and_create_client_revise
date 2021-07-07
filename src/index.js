@@ -45,7 +45,20 @@ const authorizationLink = setContext(() => {
 
 const client = new ApolloClient({
   link: authorizationLink.concat(splitLink),
-  cache: new InMemoryCache(),
+  // cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      TaskColumn: {
+        fields: {
+          tasks: {
+            merge(existing, incoming) {
+              return incoming;
+            },
+          },
+        },
+      },
+    }
+  }),
   connectToDevTools: true,
 })
 

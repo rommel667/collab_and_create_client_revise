@@ -1,7 +1,7 @@
 import { gql } from 'graphql-tag'
 
 export const FETCH_PROJECT_INVITES = gql`
-query {
+query unconfirmProjectInvites {
     unconfirmProjectInvites {
         _id
         projectName

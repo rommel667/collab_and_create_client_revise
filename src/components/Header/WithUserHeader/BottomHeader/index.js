@@ -12,6 +12,8 @@ import { NEW_TEAM } from '../../../../graphql/gql/team/mutation'
 import { VERIFIED_TEAMS } from '../../../../graphql/queries/dev/VerifiedTeamsQuery'
 import { NEW_PROJECT } from '../../../../graphql/gql/project/mutation'
 import { NEW_TASK_COLUMN } from '../../../../graphql/gql/task/mutation'
+import { PROJECTS_BY_USER } from '../../../../graphql/queries/project/ProjectsByUserQuery'
+
 
 
 
@@ -21,10 +23,8 @@ const BottomHeader = () => {
 
     const dispatch = useDispatch()
 
-    const { projectId } = useParams()
-
     const { newTeam, newProject, newTaskColumn } = useSelector(state => state.form)
-
+    
     const [openNewTeamModal, setOpenNewTeamModal] = useState(false)
     const [openNewProjectModal, setOpenNewProjectModal] = useState(false)
     const [openNewTaskColumnModal, setOpenNewTaskColumnModal] = useState(false)
@@ -73,6 +73,17 @@ const BottomHeader = () => {
 
     const [confirmNewProject] = useMutation(NEW_PROJECT, {
         update(proxy, result) {
+            const data = proxy.readQuery({
+                query: PROJECTS_BY_USER
+            })
+            if (data) {
+                proxy.writeQuery({
+                    query: PROJECTS_BY_USER,
+                    data: {
+                        projectsByUser: [...data.projectsByUser, result.data.newProject]
+                    }
+                })
+            }
             cancelNewProject()
             dispatch({ type: "NEW_PROJECT", payload: { newProject: result.data.newProject } })
         },
@@ -85,8 +96,27 @@ const BottomHeader = () => {
 
     const [confirmNewTaskColumn] = useMutation(NEW_TASK_COLUMN, {
         update(proxy, result) {
-            cancelNewTaskColumn()
-            dispatch({ type: "NEW_TASK_COLUMN", payload: { newTaskColumn: result.data.newTaskColumn } })
+            const data = proxy.readQuery({
+                query: PROJECTS_BY_USER,
+            })
+            if (data) {
+                const newData = data.projectsByUser.map(project => {
+                    if (project._id === result.data.newTaskColumn.projectId) {
+                        return { ...project, taskColumns: [...project.taskColumns, result.data.newTaskColumn] }
+                    } else {
+                        return { ...project }
+                    }
+                })
+                proxy.writeQuery({
+                    query: PROJECTS_BY_USER,
+                    data: {
+                        projectsByUser: [...newData]
+                    }
+                })
+                cancelNewTaskColumn()
+                dispatch({ type: "PROJECTS_BY_USER", payload: { projects: [...newData] } })
+                dispatch({ type: "NEW_TASK_COLUMN", payload: { newTaskColumn: result.data.newTaskColumn } })
+            }
         },
         variables: { ...newTaskColumn }
     })

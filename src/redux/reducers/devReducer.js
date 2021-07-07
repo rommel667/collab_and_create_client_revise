@@ -97,7 +97,9 @@ const dev = (state = initialState, action) => {
             return {
                 ...state,
                 colleagues: [ action.payload.acceptInvite, ...state.colleagues ],
-                pendingInvitesRequest: [ ...state.pendingInvitesRequest.filter(req => req._id !== action.payload.acceptInvite._id) ]
+                pendingInvitesRequest: [ ...state.pendingInvitesRequest.filter(req => req._id !== action.payload.acceptInvite._id) ],
+                recentInvites: state.recentInvites.filter(id => id !== action.payload.acceptInvite._id),
+                suggestions: state.suggestions.filter(suggestion => suggestion._id !== action.payload.acceptInvite._id),
             }
         }
         case "REJECT_INVITE_SUBSCRIPTION": {

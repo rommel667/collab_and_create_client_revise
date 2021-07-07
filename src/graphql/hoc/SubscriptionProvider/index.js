@@ -6,6 +6,12 @@ import RejectInviteSubscription from '../../subscriptions/dev/RejectInviteSubscr
 import NewTeamSubscription from '../../subscriptions/dev/NewTeamSubscription'
 import AcceptTeamInviteSubscription from '../../subscriptions/dev/AcceptTeamInviteSubscription'
 import RejectTeamInviteSubscription from '../../subscriptions/dev/RejectTeamInviteSubscription'
+import AcceptProjectInviteSubscription from '../../subscriptions/project/AcceptProjectInviteSubscription'
+import NewProjectInviteSubscription from '../../subscriptions/project/NewProjectInviteSubscription'
+import NewTaskColumnSubscription from '../../subscriptions/task/NewTaskColumnSubscription'
+import NewTaskSubscription from '../../subscriptions/task/NewTaskSubscription'
+import MoveTaskColumnSubscription from '../../subscriptions/task/MoveTaskColumnSubscription'
+import MoveTaskSubscription from '../../subscriptions/task/MoveTaskSubscription'
 import { useSelector } from 'react-redux'
 
 
@@ -15,6 +21,7 @@ const SubscriptionProvider = () => {
 
     return (
         <>
+       
             <SendInviteSubscription user={user} />
             <CancelRequestSubscription user={user} />
             <AcceptInviteSubscription user={user} />
@@ -22,6 +29,12 @@ const SubscriptionProvider = () => {
             <AcceptTeamInviteSubscription user={user} />
             <RejectTeamInviteSubscription user={user} />
             <NewTeamSubscription user={user} />
+            <AcceptProjectInviteSubscription user={user} />
+            <NewProjectInviteSubscription user={user} />
+            <NewTaskColumnSubscription user={user} />
+            <NewTaskSubscription user={user} />
+            <MoveTaskColumnSubscription user={user} />
+            <MoveTaskSubscription user={user} />
         </>
     )
 }

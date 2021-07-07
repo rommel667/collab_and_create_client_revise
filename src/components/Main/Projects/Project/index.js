@@ -28,7 +28,7 @@ const Project = ({ _id, projectName, description, confirmedMembers, taskColumns,
         } else {
             setMembers(confirmedMembers)
         }
-    }, [])
+    }, [confirmedMembers])
 
     return (
         <div className="relative bg-white py-6 px-6 rounded-3xl w-64 my-6 shadow-md">

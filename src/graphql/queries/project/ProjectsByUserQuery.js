@@ -16,6 +16,55 @@ const ProjectsByUserQuery = () => {
   return null
 }
 
+
+// export const PROJECTS_BY_USER = gql`
+// query projectsByUser {
+//     projectsByUser {
+//         _id
+//         projectName
+//         description
+//         status
+//         techStacks
+//         createdBy {
+//           _id
+//           name
+//           email
+//           photo
+//         }
+//         confirmedMembers {
+//           _id
+//           name
+//           email
+//           photo
+//         }
+//         createdAt
+//         updatedAt
+//         taskColumns {
+//           _id
+//           sequence
+//           tasks {
+//             _id
+//             createdBy {
+//               _id
+//             }
+//             inCharge {
+//               _id
+//             }
+//           }
+//         }
+//         noteCategories {
+//           _id
+//           notes {
+//             _id
+//             createdBy {
+//               _id
+//             }
+//           }
+//         }
+//     }
+//   }
+// `
+
 export const PROJECTS_BY_USER = gql`
 query projectsByUser {
     projectsByUser {
@@ -40,16 +89,35 @@ query projectsByUser {
         updatedAt
         taskColumns {
           _id
+          columnName
           sequence
+          createdBy {
+            _id
+            name
+            email
+            photo
+          }
           tasks {
             _id
+            description
+            columnId
             createdBy {
-              _id
+            _id
+            name
+            email
+            photo
             }
             inCharge {
-              _id
+            _id
+            name
+            email
+            photo
             }
+            createdAt
+            updatedAt
           }
+          createdAt
+          updatedAt
         }
         noteCategories {
           _id
