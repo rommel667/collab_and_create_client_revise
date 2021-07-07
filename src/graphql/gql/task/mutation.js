@@ -103,3 +103,18 @@ mutation moveTask(
 }
 
 `
+
+export const EDIT_TASK_COLUMN = gql`
+mutation editTaskColumn(
+    $columnId: ID!
+    $columnName: String!
+    $projectId: ID!
+) {
+    editTaskColumn( columnId: $columnId, columnName: $columnName, projectId: $projectId ) {
+      _id
+      columnName
+      projectId
+    }
+}
+
+`

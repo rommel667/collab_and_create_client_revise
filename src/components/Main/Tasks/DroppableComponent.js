@@ -1,6 +1,8 @@
 import React from 'react'
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import DraggableComponent from './DraggableComponent'
+import { FaEllipsisV, FaPlus, FaFileMedical } from "react-icons/fa";
+import ColumnMenu from './ColumnMenu';
 
 const DroppableComponent = ({ taskColumns, getItemStyle, setOpen }) => {
 
@@ -13,7 +15,7 @@ const DroppableComponent = ({ taskColumns, getItemStyle, setOpen }) => {
       >
         {(provided, snapshot) => (
           <div
-         
+
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
@@ -22,9 +24,12 @@ const DroppableComponent = ({ taskColumns, getItemStyle, setOpen }) => {
           >
             <div className="flex flex-row justify-between items-center mb-2" {...provided.dragHandleProps}>
               {el.columnName}
-              <svg onClick={() => setOpen(el._id)} xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
+              <div className="flex items-center gap-1">
+                <FaFileMedical size={15} onClick={() => setOpen(el._id)} className="cursor-pointer" />
+                <ColumnMenu columnName={el.columnName} columnId={el._id} />
+
+              </div>
+
             </div>
             <Droppable droppableId={el._id} type="task" index={ind}>
               {(provided, snapshot) => {

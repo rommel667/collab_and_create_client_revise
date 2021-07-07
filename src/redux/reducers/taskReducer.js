@@ -18,6 +18,30 @@ const task = (state = initialState, action) => {
                 taskColumns: [ ...state.taskColumns, action.payload.newTaskColumn ]
             }
         }
+        case "EDIT_TASK_COLUMN": {
+            return {
+                ...state,
+                taskColumns: [ ...state.taskColumns.map(column => {
+                    if(column._id === action.payload.columnId) {
+                        return { ...column, columnName: action.payload.columnName }
+                    } else {
+                        return { ...column }
+                    }
+                }) ]
+            }
+        }
+        case "EDIT_TASK_COLUMN_SUBSCRIPTION": {
+            return {
+                ...state,
+                taskColumns: [ ...state.taskColumns.map(column => {
+                    if(column._id === action.payload.columnId) {
+                        return { ...column, columnName: action.payload.columnName }
+                    } else {
+                        return { ...column }
+                    }
+                }) ]
+            }
+        }
         case "NEW_TASK_COLUMN_SUBSCRIPTION": {
             return {
                 ...state,
