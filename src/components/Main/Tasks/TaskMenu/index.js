@@ -19,7 +19,6 @@ const TaskMenu = ({ taskId, description, inCharge, columnId }) => {
 
     const [confirmTaskEdit] = useMutation(EDIT_TASK, {
         update(proxy, result) {
-            console.log("RESULT",result.data.editTask);
             const { _id, description, inCharge, columnId, projectId } = result.data.editTask
             const data = proxy.readQuery({
                 query: PROJECTS_BY_USER,
