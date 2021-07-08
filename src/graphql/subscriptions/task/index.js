@@ -5,6 +5,7 @@ import MoveTaskSubscription from "./MoveTaskSubscription"
 import EditTaskColumnSubscription from "./EditTaskColumnSubscription"
 import DeleteTaskColumnSubscription from "./DeleteColumnSubscription"
 import EditTaskSubscription from "./EditTaskSubscription"
+import DeleteTaskSubscription from "./DeleteTaskSubscription"
 
 const TaskSubscription = ({ user }) => {
     return (
@@ -16,6 +17,7 @@ const TaskSubscription = ({ user }) => {
             <EditTaskColumnSubscription user={user} />
             <DeleteTaskColumnSubscription user={user} />
             <EditTaskSubscription user={user} />
+            <DeleteTaskSubscription user={user} />
         </>
     )
 }

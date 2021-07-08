@@ -111,6 +111,32 @@ const task = (state = initialState, action) => {
                 taskColumns: [...newTaskColumns ]
             }
         }
+        case "DELETE_TASK": {
+            const newTaskColumns = state.taskColumns.map(column => {
+                if(column._id === action.payload.columnId) {
+                    return { ...column, tasks: [ ...column.tasks.filter(task => task._id !== action.payload.taskId) ] }
+                } else {
+                    return { ...column }
+                }
+            })
+            return {
+                ...state,
+                taskColumns: [...newTaskColumns ]
+            }
+        }
+        case "DELETE_TASK_SUBSCRIPTION": {
+            const newTaskColumns = state.taskColumns.map(column => {
+                if(column._id === action.payload.columnId) {
+                    return { ...column, tasks: [ ...column.tasks.filter(task => task._id !== action.payload.taskId) ] }
+                } else {
+                    return { ...column }
+                }
+            })
+            return {
+                ...state,
+                taskColumns: [...newTaskColumns ]
+            }
+        }
         case "NEW_TASK_SUBSCRIPTION": {
             const newTaskColumns = state.taskColumns.map((col, index) => {
                 if(col._id === action.payload.newTask.columnId) {

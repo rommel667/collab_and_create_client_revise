@@ -61,18 +61,27 @@ const TaskMenu = ({ taskId, description, inCharge, columnId }) => {
 
     const [confirmTaskDelete] = useMutation(DELETE_TASK, {
         update(proxy, result) {
+            console.log("RESULT", result.data.deleteTask);
+            const { _id, projectId } = result.data.deleteTask
             const data = proxy.readQuery({
                 query: PROJECTS_BY_USER,
             })
             if (data) {
                 const newData = data.projectsByUser.map(project => {
-                    if (project._id === result.data.deleteTaskColumn.projectId) {
-                        return { ...project, taskColumns: [ ...project.taskColumns.filter(col => col._id !== result.data.deleteTaskColumn._id) ] }
+                    if (project._id === projectId) {
+                        return {
+                            ...project, taskColumns: [...project.taskColumns.map(column => {
+                                if (column._id === result.data.deleteTask.columnId) {
+                                    return { ...column, tasks: [ ...column.tasks.filter(task => task._id !== _id) ] }
+                                } else {
+                                    return { ...column }
+                                }
+                            })]
+                        }
                     } else {
                         return { ...project }
                     }
                 })
-                console.log("NEW DATA", newData);
                 proxy.writeQuery({
                     query: PROJECTS_BY_USER,
                     data: {
@@ -81,7 +90,7 @@ const TaskMenu = ({ taskId, description, inCharge, columnId }) => {
                 })
                 setOpenTaskDelete(false)
                 dispatch({ type: "PROJECTS_BY_USER", payload: { projects: [...newData] } })
-                dispatch({ type: "DELETE_TASK", payload: { columnId: result.data.deleteTaskColumn._id } })
+                dispatch({ type: "DELETE_TASK", payload: { columnId: result.data.deleteTask.columnId, taskId: _id } })
             }
         },
         variables: { taskId, columnId, projectId: newTaskColumn.projectId }
