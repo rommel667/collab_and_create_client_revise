@@ -126,7 +126,9 @@ const BottomHeader = () => {
     return (
         <div className="flex justify-between items-center">
 
-            <BottomLeft />
+            <BottomLeft
+                
+            />
 
             <BottomRight
                 setOpenNewTeamModal={() => setOpenNewTeamModal(true)}

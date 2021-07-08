@@ -4,6 +4,20 @@
 
 @layer utilities {
   @variants responsive {
+    /* Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
+}
+
+@layer utilities {
+  @variants responsive {
     .inputNumber::-webkit-inner-spin-button,
     .inputNumber::-webkit-outer-spin-button {
       appearance: none;

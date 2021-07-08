@@ -19,7 +19,7 @@ const DroppableComponent = ({ taskColumns, getItemStyle, setOpen }) => {
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
-            className="bg-gray-400 rounded-md p-2 flex flex-col h-full w-full"
+            className={`${taskColumns.length < 4 ? "min-w-1/2 lg:min-w-1/3" : "min-w-1/2 md:min-w-1/3 lg:min-w-1/4"} bg-gray-300 rounded-md p-2 flex flex-col h-full`}
             style={{ ...provided.draggableProps.style }}
           >
             <div className="flex flex-row justify-between items-center mb-2" {...provided.dragHandleProps}>
@@ -40,7 +40,7 @@ const DroppableComponent = ({ taskColumns, getItemStyle, setOpen }) => {
                     {...provided.droppableProps}
                   >
                     <ul className="space-y-2 flex-1">
-                      <DraggableComponent tasks={el.tasks} getItemStyle={getItemStyle} />
+                      <DraggableComponent tasks={el.tasks} getItemStyle={getItemStyle} columnId={el._id} />
                     </ul>
                     {provided.placeholder}
                   </div>

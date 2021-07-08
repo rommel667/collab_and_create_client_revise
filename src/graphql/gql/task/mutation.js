@@ -131,3 +131,41 @@ mutation deleteTaskColumn(
 }
 
 `
+
+export const EDIT_TASK = gql`
+mutation editTask(
+    $taskId: ID!
+    $description: String!
+    $inCharge: [ID]!
+    $projectId: ID!
+) {
+    editTask( taskId: $taskId, description: $description, inCharge: $inCharge, projectId: $projectId ) {
+      _id
+      description
+      projectId
+      columnId
+      inCharge {
+        _id
+        name
+        email
+        photo
+        }
+    }
+}
+
+`
+
+export const DELETE_TASK = gql`
+mutation deleteTask(
+    $taskId: ID!
+    $columnId: ID!
+    $projectId: ID!
+) {
+    deleteTask( taskId: $taskId, columnId: $columnId, projectId: $projectId ) {
+      _id
+      columnId
+      projectId
+    }
+}
+
+`

@@ -143,6 +143,7 @@ const form = (state = initialState, action) => {
                     ...state.newTask,
                     description: "",
                     inCharge: [],
+                    columnId: ""
                 },
             }
         }

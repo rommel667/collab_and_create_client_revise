@@ -7,6 +7,9 @@ const EditTaskColumn = ({ columnName }) => {
 
     useEffect(() => {
         dispatch({ type: "UPDATE_TASK_COLUMN_INPUT", payload: { name: "columnName", value: columnName } })
+        return () => {
+            dispatch({ type: "RESET_FORM" } )
+        }
     }, [])
 
     const dispatch = useDispatch()

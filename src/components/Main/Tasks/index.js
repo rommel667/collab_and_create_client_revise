@@ -132,9 +132,9 @@ const Tasks = () => {
                     }
                 })
                 dispatch({ type: "PROJECTS_BY_USER", payload: { projects: [ ...newData ] } })
-                setUpdating(false)
+                
             }
-            
+            // setUpdating(false)
             // PENDING DISPATCH SOLUTION IF UPDATE FAILED ON SERVER/DB
         },
         // variables & updateTaskColumns for moved task for the redux state dispatch @ onDragEnd function
@@ -147,7 +147,7 @@ const Tasks = () => {
         dispatch({ type: "TASK_COLUMNS_BY_PROJECT", payload: { taskColumns } })
         return () => {
             dispatch({ type: "UPDATE_PROJECT_ID", payload: { projectId: "" } })
-            dispatch({ type: "TASK_COLUMNS_BY_PROJECT", payload: { taskColumns: [] } })
+            dispatch({ type: "TASK_COLUMNS_BY_PROJECT", payload: { taskColumns: null } })
         }
     }, [])
 
@@ -160,7 +160,7 @@ const Tasks = () => {
     function onDragEnd(result) {
         const { source, destination, draggableId, type } = result;
         // dropped outside the list
-        if (!destination || updating) {
+        if (!destination) {
             return;
         }
 
@@ -182,14 +182,14 @@ const Tasks = () => {
             const tasks = reorder(taskColumns.find(c => c._id === sId).tasks, source.index, destination.index);
             const newTaskColumns = [...taskColumns];
             newTaskColumns[newTaskColumns.findIndex(c => c._id === sId)] = { ...newTaskColumns[newTaskColumns.findIndex(c => c._id === sId)], tasks }
-            setUpdating(true)
+            // setUpdating(true)
             dispatch({ type: "ON_DRAG_END_TASK", payload: { newTaskColumns } })
         } else {
             const result = move(taskColumns.find(c => c._id === sId), taskColumns.find(c => c._id === dId), source, destination);
             const newTaskColumns = [...taskColumns];
             newTaskColumns[newTaskColumns.findIndex(c => c._id === sId)] = result[sId];
             newTaskColumns[newTaskColumns.findIndex(c => c._id === dId)] = result[dId];
-            setUpdating(true)
+            // setUpdating(true)
             dispatch({ type: "ON_DRAG_END_TASK", payload: { newTaskColumns } })
             moveTask({ variables: { sourceColumnId: sId, destinationColumnId: dId, taskId: draggableId, projectId } })
             //   setTasks(newTasks.filter(group => group.length));
@@ -197,9 +197,9 @@ const Tasks = () => {
     }
 
     return (
+        !taskColumns ? <p>Loading...</p> :
         <main className="p-3 flex flex-1 h-full">
-            {/* <TaskColumnsByProjectQuery /> */}
-            {taskColumns?.length === 0 && <p>No Column Added. Create minimum of two columns with last column for finished tasks to track your progress.</p>}
+            
 
             <ModalComponent
                 open={openNewTaskModal}
@@ -212,14 +212,16 @@ const Tasks = () => {
                 <NewTask />
             </ModalComponent>
 
-            <DragDropContext onDragEnd={onDragEnd} className="p-3">
+
+            {taskColumns.length === 0 ? <p>No Column Added. Create minimum of two columns with last column for finished tasks to track your progress.</p> :
+            <DragDropContext onDragEnd={onDragEnd} className="p-3 w-full">
 
 
                 <Droppable droppableId={projectId} direction="horizontal" type="column" >
                     {(provided, snapshot) => {
                         return (
                             <div
-                                className={`${snapshot.isDraggingOver ? "bg-blue-200" : ""} flex flex-row w-full gap-2`}
+                                className={`${taskColumns.length > 4 ? "overflow-auto" : ""} ${snapshot.isDraggingOver ? "bg-blue-200" : ""} flex w-full flex-row gap-2`}
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
                             >
@@ -234,7 +236,7 @@ const Tasks = () => {
                     }}
                 </Droppable>
 
-            </DragDropContext>
+            </DragDropContext>}
         </main>
     )
 }

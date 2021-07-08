@@ -2,7 +2,7 @@ import React from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import Task from './Task'
 
-const DraggableComponent = ({ tasks }) => {
+const DraggableComponent = ({ tasks, columnId }) => {
 
   return (
     tasks?.map((task, index) => {
@@ -20,8 +20,11 @@ const DraggableComponent = ({ tasks }) => {
               style={{ ...provided.draggableProps.style }}
             >
               <Task
+                columnId={columnId}
+                taskId={task._id}
                 description={task.description}
                 photo={task.createdBy.photo}
+                inCharge={task.inCharge}
                 createdAt={task.createdAt}
                 isDragging={snapshot.isDragging}
                 draggableStyle={provided.draggableProps.style}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import TextArea from '../SharedComponents/TextArea'
@@ -19,7 +19,7 @@ const Label = ({ photo, name }) => {
 }
 
 
-const NewTask = () => {
+const EditTask = ({ description, inCharge, columnId }) => {
 
     const dispatch = useDispatch()
     const formData = useSelector(state => state.form.newTask)
@@ -34,6 +34,15 @@ const NewTask = () => {
         return { label: <Label photo={member.photo} name={member.name} />, value: member._id }
     })
 
+    useEffect(() => {
+        const items = inCharge.map(c => ( { label: <Label photo={c.photo} name={c.name} />, value: c._id } ))
+        dispatch({ type: "UPDATE_TASK_INPUT", payload: { name: "description", value: description } })
+        dispatch({ type: "SELECT_IN_CHARGE", payload: { items } })
+        setSelected([ ...items.map(item => ({ label: item.label.props ? item.label.props.name : item.label , value: item.value })) ] )
+        return () => {
+            dispatch({ type: "RESET_FORM" } )
+        }
+    }, [])
     
 
     const onChangeInput = (event) => {
@@ -41,7 +50,7 @@ const NewTask = () => {
     }
 
     const onChangeMembers = (items) => {
-        console.log("ITEMS",items);
+        console.log(items);
         setSelected([ ...items.map(item => ({ label: item.label.props ? item.label.props.name : item.label , value: item.value })) ] )
         dispatch({ type: "SELECT_IN_CHARGE", payload: { items } })
     }
@@ -79,4 +88,4 @@ const NewTask = () => {
     )
 }
 
-export default NewTask
+export default EditTask

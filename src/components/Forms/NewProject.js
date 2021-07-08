@@ -28,6 +28,7 @@ const NewProject = () => {
 
 
     const onChangeMembers = (items) => {
+        console.log("ITEMS", items);
         dispatch({ type: "SELECT_MEMBERS", payload: { items } })
     }
 
