@@ -1,67 +1,58 @@
 import { useMutation } from '@apollo/client'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
-import NewTask from '../../Forms/NewTask'
-import ModalComponent from '../../SharedComponents/ModalComponent'
-import { MOVE_TASK, MOVE_TASK_COLUMN, NEW_TASK } from '../../../graphql/gql/task/mutation'
-import { move, reorder } from './functions'
-import { PROJECTS_BY_USER } from '../../../graphql/queries/project/ProjectsByUserQuery'
-import DragAndDrop from './DragAndDrop'
+import NewTaskPersonal from '../../../Forms/NewTaskPersonal'
+import ModalComponent from '../../../SharedComponents/ModalComponent'
+import { move, reorder } from '../functions'
+import DragAndDrop from '../DragAndDrop'
+import { PROJECTS_BY_USER } from '../../../../graphql/queries/project/ProjectsByUserQuery'
+import { MOVE_TASK, MOVE_TASK_COLUMN, NEW_TASK, NEW_TASK_PERSONAL } from '../../../../graphql/gql/task/mutation'
+import { MY_INFO } from '../../../../graphql/queries/user/MyInfoQuery'
 
 
 
-const Tasks = () => {
-
-    const { projectId } = useParams()
+const PersonalTasks = () => {
 
     const dispatch = useDispatch()
-    const { projects } = useSelector(state => state.project)
+    
+    const { myInfo } = useSelector(state => state.user)
+    const { newTask } = useSelector(state => state.form)
     const { taskColumns } = useSelector(state => state.task)
-    const newTaskData = useSelector(state => state.form.newTask)
 
-    const [openNewTaskModal, setOpenNewTaskModal] = useState(false)
+    const [openNewTaskPersonalModal, setOpenNewTaskPersonalModal] = useState(false)
 
-    const cancelNewTask = () => {
-        setOpenNewTaskModal(false)
+    const cancelNewTaskPersonal = () => {
+        setOpenNewTaskPersonalModal(false)
         dispatch({ type: "RESET_FORM" })
     }
 
 
-    const [newTask] = useMutation(NEW_TASK, {
+    const [newTaskPersonal] = useMutation(NEW_TASK_PERSONAL, {
         update(proxy, result) {
             const data = proxy.readQuery({
-                query: PROJECTS_BY_USER
+                query: MY_INFO
             })
             if (data) {
-                const newData = data.projectsByUser.map(project => {
-                    if (project._id === result.data.newTask.projectId) {
-                        return {
-                            ...project, taskColumns: project.taskColumns.map(column => {
-                                if (column._id === result.data.newTask.columnId) {
-                                    return { ...column, tasks: [result.data.newTask, ...column.tasks] }
-                                } else {
-                                    return { ...column }
-                                }
-                            })
-                        }
+                const newData = { ...data.myInfo, personalTaskColumns: [ ...data.myInfo.personalTaskColumns.map(column => {
+                    if(column._id === result.data.newTaskPersonal.columnId) {
+                        return { ...column, tasks: [ result.data.newTaskPersonal, ...column.tasks ] }
                     } else {
-                        return { ...project }
+                        return { ...column }
                     }
-                })
+                }) ] } 
                 proxy.writeQuery({
                     query: PROJECTS_BY_USER,
                     data: {
-                        projectsByUser: [...newData]
+                        projectsByUser: { ...newData }
                     }
                 })
-                cancelNewTask()
-                dispatch({ type: "PROJECTS_BY_USER", payload: { projects: [...newData] } })
-                dispatch({ type: "NEW_TASK", payload: { newTask: result.data.newTask } })
+                cancelNewTaskPersonal()
+                dispatch({ type: "MY_INFO", payload: { myInfo: { ...newData } } })
+                dispatch({ type: "NEW_TASK_PERSONAL", payload: { newTaskPersonal: result.data.newTaskPersonal } })
             }
 
         },
-        variables: { ...newTaskData }
+        variables: { description: newTask.description, columnId: newTask.columnId  }
     })
 
     const [moveTaskColumn] = useMutation(MOVE_TASK_COLUMN, {
@@ -136,19 +127,17 @@ const Tasks = () => {
     })
 
     useEffect(() => {
-        const projectInfo = projects?.find(project => project._id === projectId)
-        const taskColumns = projectInfo.taskColumns
-        dispatch({ type: "UPDATE_PROJECT_ID", payload: { projectId } })
-        dispatch({ type: "TASK_COLUMNS_BY_PROJECT", payload: { taskColumns } })
+        const taskColumns = myInfo.personalTaskColumns
+        dispatch({ type: "TASK_COLUMNS_PERSONAL", payload: { taskColumns } })
         return () => {
-            dispatch({ type: "UPDATE_PROJECT_ID", payload: { projectId: "" } })
-            dispatch({ type: "TASK_COLUMNS_BY_PROJECT", payload: { taskColumns: null } })
+            dispatch({ type: "TASK_COLUMNS_PERSONAL", payload: { taskColumns: null } })
         }
     }, [])
 
 
-    const onOpenNewTaskModal = (columnId) => {
-        setOpenNewTaskModal(true)
+
+    const onOpenNewTaskPersonalModal = (columnId) => {
+        setOpenNewTaskPersonalModal(true)
         dispatch({ type: "TASK_COLUMN_ID", payload: { columnId } })
     }
 
@@ -165,7 +154,7 @@ const Tasks = () => {
             newColumnOrder.splice(source.index, 1)
             newColumnOrder.splice(destination.index, 0, target)
             const taskColumnIds = newColumnOrder.map(col => col._id)
-            moveTaskColumn({ variables: { taskColumnIds, projectId } })
+            // moveTaskColumn({ variables: { taskColumnIds, projectId } })
             dispatch({ type: "ON_DRAG_END_TASK_COLUMN", payload: { newColumnOrder } })
             return
         }
@@ -184,7 +173,7 @@ const Tasks = () => {
             newTaskColumns[newTaskColumns.findIndex(c => c._id === sId)] = result[sId];
             newTaskColumns[newTaskColumns.findIndex(c => c._id === dId)] = result[dId];
             dispatch({ type: "ON_DRAG_END_TASK", payload: { newTaskColumns } })
-            moveTask({ variables: { sourceColumnId: sId, destinationColumnId: dId, taskId: draggableId, projectId } })
+            // moveTask({ variables: { sourceColumnId: sId, destinationColumnId: dId, taskId: draggableId, projectId } })
         }
     }
 
@@ -194,28 +183,28 @@ const Tasks = () => {
 
 
                 <ModalComponent
-                    open={openNewTaskModal}
-                    onClose={cancelNewTask}
-                    cancel={cancelNewTask}
-                    modalTitle="New Task"
+                    open={openNewTaskPersonalModal}
+                    onClose={cancelNewTaskPersonal}
+                    cancel={cancelNewTaskPersonal}
+                    modalTitle="New Personal Task"
                     confirmButtonText="Confirm"
-                    confirm={newTask}
+                    confirm={newTaskPersonal}
                 >
-                    <NewTask />
+                    <NewTaskPersonal />
                 </ModalComponent>
 
 
-                {taskColumns.length === 0 ? <p>No Column Added. Create minimum of two columns with last column for finished tasks to track your progress.</p> :
+                {taskColumns.length === 0 ? <p>No Column Added.</p> :
 
                     <DragAndDrop
                         onDragEnd={onDragEnd}
                         taskColumns={taskColumns}
-                        onOpenNewTaskModal={onOpenNewTaskModal}
-                        mainDropprableId={projectId}
+                        onOpenNewTaskModal={onOpenNewTaskPersonalModal}
+                        mainDropprableId="personal-tasks"
                     />}
 
             </main>
     )
 }
 
-export default Tasks
+export default PersonalTasks

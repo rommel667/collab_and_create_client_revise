@@ -11,8 +11,9 @@ import { useMutation } from '@apollo/client'
 import { NEW_TEAM } from '../../../../graphql/gql/team/mutation'
 import { VERIFIED_TEAMS } from '../../../../graphql/queries/dev/VerifiedTeamsQuery'
 import { NEW_PROJECT } from '../../../../graphql/gql/project/mutation'
-import { NEW_TASK_COLUMN } from '../../../../graphql/gql/task/mutation'
+import { NEW_TASK_COLUMN, NEW_TASK_COLUMN_PERSONAL } from '../../../../graphql/gql/task/mutation'
 import { PROJECTS_BY_USER } from '../../../../graphql/queries/project/ProjectsByUserQuery'
+import { MY_INFO } from '../../../../graphql/queries/user/MyInfoQuery'
 
 
 
@@ -28,6 +29,7 @@ const BottomHeader = () => {
     const [openNewTeamModal, setOpenNewTeamModal] = useState(false)
     const [openNewProjectModal, setOpenNewProjectModal] = useState(false)
     const [openNewTaskColumnModal, setOpenNewTaskColumnModal] = useState(false)
+    const [openNewTaskColumnPersonalModal, setOpenNewTaskColumnPersonalModal] = useState(false)
 
     const cancelNewTeam = () => {
         setOpenNewTeamModal(false)
@@ -41,6 +43,11 @@ const BottomHeader = () => {
 
     const cancelNewTaskColumn = () => {
         setOpenNewTaskColumnModal(false)
+        dispatch({ type: "RESET_FORM" })
+    }
+
+    const cancelNewTaskColumnPersonal = () => {
+        setOpenNewTaskColumnPersonalModal(false)
         dispatch({ type: "RESET_FORM" })
     }
 
@@ -121,6 +128,27 @@ const BottomHeader = () => {
         variables: { ...newTaskColumn }
     })
 
+    const [confirmNewTaskColumnPersonal] = useMutation(NEW_TASK_COLUMN_PERSONAL, {
+        update(proxy, result) {
+            const data = proxy.readQuery({
+                query: MY_INFO,
+            })
+            if (data) {
+                const newData = { ...data.myInfo, personalTaskColumns: [ result.data.newTaskColumnPersonal, ...data.myInfo.personalTaskColumns ] }  
+                proxy.writeQuery({
+                    query: MY_INFO,
+                    data: {
+                        myInfo: { ...newData }
+                    }
+                })
+                cancelNewTaskColumnPersonal()
+                dispatch({ type: "MY_INFO", payload: { myInfo: { ...newData } } })
+                dispatch({ type: "NEW_TASK_COLUMN_PERSONAL", payload: { newTaskColumnPersonal: result.data.newTaskColumnPersonal } })
+            }
+        },
+        variables: { columnName: newTaskColumn.columnName }
+    })
+
 
 
     return (
@@ -134,6 +162,7 @@ const BottomHeader = () => {
                 setOpenNewTeamModal={() => setOpenNewTeamModal(true)}
                 setOpenNewProjectModal={() => setOpenNewProjectModal(true)}
                 setOpenNewTaskColumnModal={() => setOpenNewTaskColumnModal(true)}
+                setOpenNewTaskColumnPersonalModal={() => setOpenNewTaskColumnPersonalModal(true)}
             />
 
             <ModalComponent
@@ -165,6 +194,17 @@ const BottomHeader = () => {
                 modalTitle="New Column"
                 confirmButtonText="Confirm"
                 confirm={confirmNewTaskColumn}
+            >
+                <NewTaskColumn />
+            </ModalComponent>
+
+            <ModalComponent
+                open={openNewTaskColumnPersonalModal}
+                onClose={cancelNewTaskColumnPersonal}
+                cancel={cancelNewTaskColumnPersonal}
+                modalTitle="New Column"
+                confirmButtonText="Confirm"
+                confirm={confirmNewTaskColumnPersonal}
             >
                 <NewTaskColumn />
             </ModalComponent>

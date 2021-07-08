@@ -1,7 +1,7 @@
 import React from 'react'
-import TaskMenu from './TaskMenu';
+import TaskMenu from '../TaskMenu';
 
-const Task = ({ columnId, taskId, description, photo, createdAt, inCharge, isDragging }) => {
+const ProjectTask = ({ columnId, taskId, description, photo, createdAt, inCharge, isDragging }) => {
   return (
     <li className={`${isDragging ? "bg-green-300" : "bg-white"} rounded-sm shadow`}>
       <div>
@@ -42,4 +42,4 @@ const Task = ({ columnId, taskId, description, photo, createdAt, inCharge, isDra
   )
 }
 
-export default Task
+export default ProjectTask

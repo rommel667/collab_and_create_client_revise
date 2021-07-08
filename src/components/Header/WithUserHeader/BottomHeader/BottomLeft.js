@@ -51,6 +51,15 @@ const BottomLeft = () => {
                     </div>
                 </div>}
 
+                {path1 === "myprofile" &&
+                <div>
+                    <div>
+                        <h1 className="text-lg font-semibold text-gray-900 leading-tight">
+                            My Profile
+                        </h1>
+                    </div>
+                </div>}
+
         </div>
     )
 }

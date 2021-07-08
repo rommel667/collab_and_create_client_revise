@@ -169,3 +169,38 @@ mutation deleteTask(
 }
 
 `
+
+export const NEW_TASK_COLUMN_PERSONAL = gql`
+mutation newTaskColumnPersonal(
+    $columnName: String!
+) {
+    newTaskColumnPersonal( columnName: $columnName ) {
+      _id
+      columnName
+      sequence
+      tasks {
+        _id
+        description
+        createdAt
+        updatedAt
+      }
+    }
+}
+
+`
+
+export const NEW_TASK_PERSONAL = gql`
+mutation newTaskPersonal(
+    $description: String!
+    $columnId: ID!
+) {
+    newTaskPersonal( description: $description, columnId: $columnId ) {
+        _id
+        description
+        columnId
+        createdAt
+        updatedAt
+    }
+}
+
+`

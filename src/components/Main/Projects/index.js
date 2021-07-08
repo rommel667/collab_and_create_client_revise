@@ -9,7 +9,7 @@ const Projects = () => {
 
     const { projects } = useSelector(state => state.project)
 
-    const [ status, setStatus ] = useState("")
+    const [ status, setStatus ] = useState("Ongoing")
 
     useEffect(() => {
         if(location.pathname.split('/')[1] === "projects") {
@@ -26,7 +26,7 @@ const Projects = () => {
     }, [location])
 
     return (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 
             {projects?.filter(project => project.status === status).map(project => {
                 return (

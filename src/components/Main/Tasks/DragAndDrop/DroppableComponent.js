@@ -2,7 +2,7 @@ import React from 'react'
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import DraggableComponent from './DraggableComponent'
 import { FaEllipsisV, FaPlus, FaFileMedical } from "react-icons/fa";
-import ColumnMenu from './ColumnMenu';
+import ColumnMenu from '../ColumnMenu';
 
 const DroppableComponent = ({ taskColumns, getItemStyle, setOpen }) => {
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLocation } from 'react-router'
 
-const BottomRight = ({ setOpenNewTeamModal, setOpenNewProjectModal, setOpenNewTaskColumnModal }) => {
+const BottomRight = ({ setOpenNewTeamModal, setOpenNewProjectModal, setOpenNewTaskColumnModal, setOpenNewTaskColumnPersonalModal }) => {
 
     const location = useLocation()
 
@@ -12,8 +12,11 @@ const BottomRight = ({ setOpenNewTeamModal, setOpenNewProjectModal, setOpenNewTa
         if (location.pathname.split('/')[1] === "projects") {
             setOpenNewProjectModal()
         }
-        if (location.pathname.split('/')[1] === "tasks") {
+        if (location.pathname.split('/')[1] === "tasks"  && location.pathname.split('/')[2] !== "personaltasks") {
             setOpenNewTaskColumnModal()
+        }
+        if (location.pathname.split('/')[1] === "tasks" && location.pathname.split('/')[2] === "personaltasks") {
+            setOpenNewTaskColumnPersonalModal()
         }
     }
 

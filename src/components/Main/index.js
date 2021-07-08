@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import Projects from './Projects'
-import Tasks from './Tasks'
 import Notes from './Notes'
 import Devs from './Devs'
+import ProjectTasks from './Tasks/ProjectTasks'
+import AssignedTasks from './AssignedTasks'
+import PersonalTasks from './Tasks/PersonalTasks'
 import { Switch, Route, useLocation } from 'react-router-dom'
 import InitialQueryProvider from '../../graphql/hoc/InitialQueryProvider'
 import MyProfile from './MyProfile'
@@ -28,8 +30,14 @@ const Main = ({ user }) => {
                 <Route path='/projects' render={(props) => (
                     <Projects {...props} />)}
                 />
+                <Route exact path='/tasks/personaltasks' render={(props) => (
+                    projects && <PersonalTasks {...props} />)}
+                />
+                <Route exact path='/tasks/assignedtome' render={(props) => (
+                    projects && <AssignedTasks {...props} />)}
+                />
                 <Route path='/tasks/:projectId' render={(props) => (
-                    projects && <Tasks {...props} />)}
+                    projects && <ProjectTasks {...props} />)}
                 />
                 <Route path='/notes/:projectId' render={(props) => (
                     projects && <Notes {...props} />)}
