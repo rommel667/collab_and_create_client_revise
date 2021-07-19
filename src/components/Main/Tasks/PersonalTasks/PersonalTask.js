@@ -7,7 +7,7 @@ const PersonalTask = ({ columnId, taskId, description, createdAt, isDragging }) 
       <div>
         <div className="bg-gray-500 flex justify-between rounded-t-sm items-center p-1">
           <p className="text-xs text-gray-300 font-normal">{new Date(createdAt).toLocaleString()}</p>
-          {/* <TaskMenu taskId={taskId} description={description} inCharge={inCharge} columnId={columnId} /> */}
+          <TaskMenu taskId={taskId} description={description} columnId={columnId} />
         </div>
         <div className="p-2">
           <div className="my-2 flex flex-wrap">

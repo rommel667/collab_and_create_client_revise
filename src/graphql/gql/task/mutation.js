@@ -189,6 +189,30 @@ mutation newTaskColumnPersonal(
 
 `
 
+export const EDIT_TASK_COLUMN_PERSONAL = gql`
+mutation editTaskColumnPersonal(
+    $columnId: ID!
+    $columnName: String!
+) {
+    editTaskColumnPersonal( columnId: $columnId, columnName: $columnName  ) {
+      _id
+      columnName
+    }
+}
+
+`
+
+export const DELETE_TASK_COLUMN_PERSONAL = gql`
+mutation deleteTaskColumnPersonal(
+    $columnId: ID!
+) {
+    deleteTaskColumnPersonal( columnId: $columnId ) {
+      _id
+    }
+}
+
+`
+
 export const NEW_TASK_PERSONAL = gql`
 mutation newTaskPersonal(
     $description: String!
@@ -201,6 +225,60 @@ mutation newTaskPersonal(
         createdAt
         updatedAt
     }
+}
+
+`
+
+export const EDIT_TASK_PERSONAL = gql`
+mutation editTaskPersonal(
+    $taskId: ID!
+    $description: String!
+) {
+    editTaskPersonal( taskId: $taskId, description: $description ) {
+      _id
+      description
+      columnId
+    }
+}
+
+`
+
+export const DELETE_TASK_PERSONAL = gql`
+mutation deleteTaskPersonal(
+    $taskId: ID!
+    $columnId: ID!
+) {
+    deleteTaskPersonal( taskId: $taskId, columnId: $columnId ) {
+      _id
+      columnId
+    }
+}
+
+`
+
+export const MOVE_TASK_COLUMN_PERSONAL = gql`
+mutation moveTaskColumnPersonal(
+    $taskColumnIds: [ID]!
+) {
+    moveTaskColumnPersonal(taskColumnIds: $taskColumnIds) {
+      newSequenceIds
+    }
+}
+
+`
+
+export const MOVE_TASK_PERSONAL = gql`
+mutation moveTaskPersonal(
+    $sourceColumnId: ID!
+    $destinationColumnId: ID!
+    $taskId: ID!
+) {
+    moveTaskPersonal( sourceColumnId: $sourceColumnId, destinationColumnId: $destinationColumnId, taskId: $taskId ) {
+      message
+      sourceColumnId
+      destinationColumnId
+      taskId
+      }
 }
 
 `

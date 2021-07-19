@@ -6,7 +6,7 @@ import ModalComponent from '../../../SharedComponents/ModalComponent'
 import { move, reorder } from '../functions'
 import DragAndDrop from '../DragAndDrop'
 import { PROJECTS_BY_USER } from '../../../../graphql/queries/project/ProjectsByUserQuery'
-import { MOVE_TASK, MOVE_TASK_COLUMN, NEW_TASK, NEW_TASK_PERSONAL } from '../../../../graphql/gql/task/mutation'
+import { MOVE_TASK_COLUMN_PERSONAL, MOVE_TASK_PERSONAL, NEW_TASK_PERSONAL } from '../../../../graphql/gql/task/mutation'
 import { MY_INFO } from '../../../../graphql/queries/user/MyInfoQuery'
 
 
@@ -41,9 +41,9 @@ const PersonalTasks = () => {
                     }
                 }) ] } 
                 proxy.writeQuery({
-                    query: PROJECTS_BY_USER,
+                    query: MY_INFO,
                     data: {
-                        projectsByUser: { ...newData }
+                        myInfo: { ...newData }
                     }
                 })
                 cancelNewTaskPersonal()
@@ -55,70 +55,56 @@ const PersonalTasks = () => {
         variables: { description: newTask.description, columnId: newTask.columnId  }
     })
 
-    const [moveTaskColumn] = useMutation(MOVE_TASK_COLUMN, {
+    const [moveTaskColumnPersonal] = useMutation(MOVE_TASK_COLUMN_PERSONAL, {
         update(proxy, result) {
             const data = proxy.readQuery({
-                query: PROJECTS_BY_USER
+                query: MY_INFO
             })
             if (data) {
-                const targetProject = data.projectsByUser.find(project => project._id === result.data.moveTaskColumn.projectId)
-                const newTaskColumns = result.data.moveTaskColumn.newSequenceIds.map((seq, index) => {
-                    const column = targetProject.taskColumns.find(column => column._id === seq)
-                    return { ...column, sequence: index + 1 }
-                })
-                const newData = data.projectsByUser.map(project => {
-                    if (project._id === result.data.moveTaskColumn.projectId) {
-                        return { ...project, taskColumns: [...newTaskColumns] }
-                    } else {
-                        return { ...project }
-                    }
-                })
+                const newData = { ...data.myInfo, personalTaskColumns: [ ...result.data.moveTaskColumnPersonal.newSequenceIds.map((seq, index) => {
+                    const targetColumn = data.myInfo.personalTaskColumns.find(column => column._id === seq)
+                    return { ...targetColumn, sequence: index + 1 }
+                }) ] }
+                console.log("NEW DATA", newData);
                 proxy.writeQuery({
-                    query: PROJECTS_BY_USER,
+                    query: MY_INFO,
                     data: {
-                        projectsByUser: [...newData]
+                        myInfo: { ...newData }
                     }
                 })
-                dispatch({ type: "PROJECTS_BY_USER", payload: { projects: [...newData] } })
+
+                dispatch({ type: "MY_INFO", payload: { myInfo: { ...newData } } })
             }
             //variables & newColumnOrder for redux state dispatch @ onDragEnd function
         },
     })
 
-    const [moveTask] = useMutation(MOVE_TASK, {
+    const [moveTaskPersonal] = useMutation(MOVE_TASK_PERSONAL, {
         update(proxy, result) {
             const data = proxy.readQuery({
-                query: PROJECTS_BY_USER
+                query: MY_INFO
             })
             if (data) {
-                const targetProject = data.projectsByUser.find(project => project._id === result.data.moveTask.projectId)
-                const targetTask = targetProject.taskColumns.find(col => col._id === result.data.moveTask.sourceColumnId).tasks.find(task => task._id === result.data.moveTask.taskId)
-                const newTaskColumns = targetProject.taskColumns.map(column => {
-                    if (column._id === result.data.moveTask.sourceColumnId) {
-                        return { ...column, tasks: [...column.tasks.filter(task => task._id !== result.data.moveTask.taskId)] }
+                const targetTask = data.myInfo.personalTaskColumns.find(col => col._id === result.data.moveTaskPersonal.sourceColumnId).tasks.find(task => task._id === result.data.moveTaskPersonal.taskId)
+                const newTaskColumns = data.myInfo.personalTaskColumns.map(column => {
+                    if (column._id === result.data.moveTaskPersonal.sourceColumnId) {
+                        return { ...column, tasks: [...column.tasks.filter(task => task._id !== result.data.moveTaskPersonal.taskId)] }
                     }
-                    else if (column._id === result.data.moveTask.destinationColumnId) {
+                    else if (column._id === result.data.moveTaskPersonal.destinationColumnId) {
                         return { ...column, tasks: [targetTask, ...column.tasks] }
                     }
                     else {
                         return { ...column }
                     }
                 })
-                console.log("NEW", newTaskColumns);
-                const newData = data.projectsByUser.map(project => {
-                    if (project._id === result.data.moveTask.projectId) {
-                        return { ...project, taskColumns: [...newTaskColumns] }
-                    } else {
-                        return { ...project }
-                    }
-                })
+                const newData = { ...data.myInfo, personalTaskColumns: [ ...newTaskColumns ] }
                 proxy.writeQuery({
-                    query: PROJECTS_BY_USER,
+                    query: MY_INFO,
                     data: {
-                        projectsByUser: [...newData]
+                        myInfo: { ...newData }
                     }
                 })
-                dispatch({ type: "PROJECTS_BY_USER", payload: { projects: [...newData] } })
+                dispatch({ type: "MY_INFO", payload: { myInfo: { ...newData } } })
 
             }
             // PENDING DISPATCH SOLUTION IF UPDATE FAILED ON SERVER/DB
@@ -127,7 +113,8 @@ const PersonalTasks = () => {
     })
 
     useEffect(() => {
-        const taskColumns = myInfo.personalTaskColumns
+        const tempArray = [...myInfo.personalTaskColumns]
+        const taskColumns =tempArray.sort((a, b) => a.sequence - b.sequence)
         dispatch({ type: "TASK_COLUMNS_PERSONAL", payload: { taskColumns } })
         return () => {
             dispatch({ type: "TASK_COLUMNS_PERSONAL", payload: { taskColumns: null } })
@@ -154,8 +141,8 @@ const PersonalTasks = () => {
             newColumnOrder.splice(source.index, 1)
             newColumnOrder.splice(destination.index, 0, target)
             const taskColumnIds = newColumnOrder.map(col => col._id)
-            // moveTaskColumn({ variables: { taskColumnIds, projectId } })
-            dispatch({ type: "ON_DRAG_END_TASK_COLUMN", payload: { newColumnOrder } })
+            moveTaskColumnPersonal({ variables: { taskColumnIds } })
+            dispatch({ type: "ON_DRAG_END_TASK_COLUMN_PERSONAL", payload: { newColumnOrder } })
             return
         }
 
@@ -166,14 +153,14 @@ const PersonalTasks = () => {
             const tasks = reorder(taskColumns.find(c => c._id === sId).tasks, source.index, destination.index);
             const newTaskColumns = [...taskColumns];
             newTaskColumns[newTaskColumns.findIndex(c => c._id === sId)] = { ...newTaskColumns[newTaskColumns.findIndex(c => c._id === sId)], tasks }
-            dispatch({ type: "ON_DRAG_END_TASK", payload: { newTaskColumns } })
+            dispatch({ type: "ON_DRAG_END_TASK_PERSONAL", payload: { newTaskColumns } })
         } else {
             const result = move(taskColumns.find(c => c._id === sId), taskColumns.find(c => c._id === dId), source, destination);
             const newTaskColumns = [...taskColumns];
             newTaskColumns[newTaskColumns.findIndex(c => c._id === sId)] = result[sId];
             newTaskColumns[newTaskColumns.findIndex(c => c._id === dId)] = result[dId];
-            dispatch({ type: "ON_DRAG_END_TASK", payload: { newTaskColumns } })
-            // moveTask({ variables: { sourceColumnId: sId, destinationColumnId: dId, taskId: draggableId, projectId } })
+            dispatch({ type: "ON_DRAG_END_TASK_PERSONAL", payload: { newTaskColumns } })
+            moveTaskPersonal({ variables: { sourceColumnId: sId, destinationColumnId: dId, taskId: draggableId } })
         }
     }
 

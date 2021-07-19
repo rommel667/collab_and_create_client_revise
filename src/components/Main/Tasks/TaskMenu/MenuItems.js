@@ -1,13 +1,16 @@
 import React, { Fragment, useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { useLocation } from 'react-router-dom';
 
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-const MenuItems = ({ open, setOpenTaskEdit, setOpenTaskDelete }) => {
+const MenuItems = ({ open, setOpenTaskEdit, setOpenTaskDelete, setOpenTaskPersonalEdit, setOpenTaskPersonalDelete }) => {
+
+    const location = useLocation()
 
     return (
 
@@ -33,7 +36,7 @@ const MenuItems = ({ open, setOpenTaskEdit, setOpenTaskDelete }) => {
                                 active ? 'bg-gray-100' : '',
                                 'px-2 py-1 text-xs text-gray-700 cursor-pointer flex items-center gap-2'
                             )}
-                            onClick={setOpenTaskEdit}
+                            onClick={location.pathname.split('/')[2] === "personaltasks" ? setOpenTaskPersonalEdit : setOpenTaskEdit}
                         >
                             <FaEdit />
                             <p>Edit</p>
@@ -48,7 +51,7 @@ const MenuItems = ({ open, setOpenTaskEdit, setOpenTaskDelete }) => {
                                 active ? 'bg-gray-100' : '',
                                 'px-2 py-1 text-xs text-gray-700 cursor-pointer flex items-center gap-2'
                             )}
-                            onClick={setOpenTaskDelete}
+                            onClick={location.pathname.split('/')[2] === "personaltasks" ? setOpenTaskPersonalDelete : setOpenTaskDelete}
                         >
                             <FaTrashAlt />
                             <p>Delete</p>

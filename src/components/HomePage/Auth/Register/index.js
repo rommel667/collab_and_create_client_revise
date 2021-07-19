@@ -23,7 +23,7 @@ const Register = ({ user }) => {
         },
         onError(err) {
             console.log(err.graphQLErrors[0]);
-            setError(err.graphQLErrors[0].message);
+            // setError(err.graphQLErrors[0].message);
         }
     })
 

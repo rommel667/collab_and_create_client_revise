@@ -16,6 +16,7 @@ const Main = ({ user }) => {
     const history = useHistory()
     const location = useLocation()
     const { projects } = useSelector(state => state.project)
+    const { myInfo } = useSelector(state => state.user)
 
     useEffect(() => {
         if (!user) {
@@ -31,7 +32,7 @@ const Main = ({ user }) => {
                     <Projects {...props} />)}
                 />
                 <Route exact path='/tasks/personaltasks' render={(props) => (
-                    projects && <PersonalTasks {...props} />)}
+                    myInfo && <PersonalTasks {...props} />)}
                 />
                 <Route exact path='/tasks/assignedtome' render={(props) => (
                     projects && <AssignedTasks {...props} />)}

@@ -137,7 +137,11 @@ const ProjectTasks = () => {
 
     useEffect(() => {
         const projectInfo = projects?.find(project => project._id === projectId)
-        const taskColumns = projectInfo.taskColumns
+        // const taskColumns = projectInfo.taskColumns
+
+        const tempArray = [...projectInfo.taskColumns]
+        const taskColumns =tempArray.sort((a, b) => a.sequence - b.sequence)
+
         dispatch({ type: "UPDATE_PROJECT_ID", payload: { projectId } })
         dispatch({ type: "TASK_COLUMNS_BY_PROJECT", payload: { taskColumns } })
         return () => {

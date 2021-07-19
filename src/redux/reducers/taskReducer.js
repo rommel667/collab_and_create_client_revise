@@ -213,6 +213,33 @@ const task = (state = initialState, action) => {
                 taskColumns: [ ...state.taskColumns, action.payload.newTaskColumnPersonal ]
             }
         }
+        case "EDIT_TASK_COLUMN_PERSONAL": {
+            return {
+                ...state,
+                taskColumns: [ ...state.taskColumns.map(column => {
+                    if(column._id === action.payload.columnId) {
+                        return { ...column, columnName: action.payload.columnName }
+                    } else {
+                        return { ...column }
+                    }
+                }) ]
+            }
+        }
+        case "DELETE_TASK_COLUMN_PERSONAL": {
+            return {
+                ...state,
+                taskColumns: [ ...state.taskColumns.filter(col => col._id !== action.payload.columnId) ]
+            }
+        }
+        case "ON_DRAG_END_TASK_COLUMN_PERSONAL": {
+            const newTaskColumns = action.payload.newColumnOrder.map((col, index) => {
+                return { ...col, sequence: index + 1 }
+            })
+            return {
+                ...state,
+                taskColumns: [...newTaskColumns ]
+            }
+        }
 
         //PERSONAL TASK
         case "NEW_TASK_PERSONAL": {
@@ -226,6 +253,44 @@ const task = (state = initialState, action) => {
             return {
                 ...state,
                 taskColumns: [...newTaskColumns ]
+            }
+        }
+        case "EDIT_TASK_PERSONAL": {
+            const newTaskColumns = state.taskColumns.map(column => {
+                if(column._id === action.payload.columnId) {
+                    return { ...column, tasks: [ ...column.tasks.map(task => {
+                        if(task._id === action.payload.taskId) {
+                            return { ...task, description: action.payload.description }
+                        } else {
+                            return { ...task }
+                        }
+                    }) ] }
+                } else {
+                    return { ...column }
+                }
+            })
+            return {
+                ...state,
+                taskColumns: [...newTaskColumns ]
+            }
+        }
+        case "DELETE_TASK_PERSONAL": {
+            const newTaskColumns = state.taskColumns.map(column => {
+                if(column._id === action.payload.columnId) {
+                    return { ...column, tasks: [ ...column.tasks.filter(task => task._id !== action.payload.taskId) ] }
+                } else {
+                    return { ...column }
+                }
+            })
+            return {
+                ...state,
+                taskColumns: [...newTaskColumns ]
+            }
+        }
+        case "ON_DRAG_END_TASK_PERSONAL": {
+            return {
+                ...state,
+                taskColumns: [...action.payload.newTaskColumns ]
             }
         }
 
