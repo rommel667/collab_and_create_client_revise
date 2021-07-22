@@ -12,12 +12,12 @@ import { setContext } from 'apollo-link-context'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 const httpLink = new HttpLink({
-  // uri: "http://localhost/graphql"
+  // uri: "http://localhost:4000/graphql"
   uri: "http://ec2-13-212-202-63.ap-southeast-1.compute.amazonaws.com:4000/graphql"
 })
 
 const wsLink = new WebSocketLink({
-  // uri: "ws://localhost/graphql",
+  // uri: "ws://localhost:4000/graphql",
   uri: "ws://ec2-13-212-202-63.ap-southeast-1.compute.amazonaws.com:4000/graphql",
   options: {
     reconnect: true

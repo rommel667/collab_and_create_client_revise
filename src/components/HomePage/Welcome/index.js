@@ -1,10 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 
 const Welcome = () => {
 
+    const { user } = useSelector(state =>state.user)
+
     const history = useHistory()
+
+    useEffect(() => {
+        if(user) {
+            history.replace('/projects')
+        }
+    }, [user])
 
     return (
         <div className="bg-white min-h-screen flex justify-center items-center px-20 pb-10">

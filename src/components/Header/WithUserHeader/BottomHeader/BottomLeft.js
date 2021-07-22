@@ -7,6 +7,7 @@ const BottomLeft = () => {
 
     const location = useLocation()
     const { newTaskColumn } = useSelector(state => state.form)
+    const { verifiedTeams } = useSelector(state => state.team)
 
     const path1 = location.pathname.split('/')[1]
     const path2 = location.pathname.split('/')[2]
@@ -56,6 +57,60 @@ const BottomLeft = () => {
                     <div>
                         <h1 className="text-lg font-semibold text-gray-900 leading-tight">
                             My Profile
+                        </h1>
+                    </div>
+                </div>}
+
+                {path2 === "personaltasks" &&
+                <div>
+                    <div>
+                        <h1 className="text-lg font-semibold text-gray-900 leading-tight">
+                            My Personal Tasks
+                        </h1>
+                    </div>
+                </div>}
+
+                {path2 === "assignedtome" &&
+                <div>
+                    <div>
+                        <h1 className="text-lg font-semibold text-gray-900 leading-tight">
+                            Tasks Assigned to Me
+                        </h1>
+                    </div>
+                </div>}
+
+                {(path1 === "tasks" && path2 === "createdbyme") &&
+                <div>
+                    <div>
+                        <h1 className="text-lg font-semibold text-gray-900 leading-tight">
+                            Tasks Created by Me
+                        </h1>
+                    </div>
+                </div>}
+
+                {path2 === "personalnotes" &&
+                <div>
+                    <div>
+                        <h1 className="text-lg font-semibold text-gray-900 leading-tight">
+                            My Personal Notes
+                        </h1>
+                    </div>
+                </div>}
+
+                {(path1 === "notes" && path2 === "createdbyme") &&
+                <div>
+                    <div>
+                        <h1 className="text-lg font-semibold text-gray-900 leading-tight">
+                            Notes Created by Me
+                        </h1>
+                    </div>
+                </div>}
+
+                {path2 === "teams" &&
+                <div>
+                    <div>
+                        <h1 className="text-lg font-semibold text-gray-900 leading-tight">
+                            {`Teams (${verifiedTeams.length})`}
                         </h1>
                     </div>
                 </div>}

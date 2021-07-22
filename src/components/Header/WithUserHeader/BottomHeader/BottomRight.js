@@ -22,6 +22,8 @@ const BottomRight = ({ setOpenNewTeamModal, setOpenNewProjectModal, setOpenNewTa
 
     return (
         <div className="flex items-center gap-1">
+            {(location.pathname.split('/')[2] === "assignedtome" || location.pathname.split('/')[2] === "createdbyme" || location.pathname.split('/')[2] === "colleagues" || 
+            location.pathname.split('/')[2] === "finished" || location.pathname.split('/')[2] === "cancelled") ? null :
             <button
                 onClick={openModalHandler}
                 className="flex justify-center items-center bg-indigo-600 rounded-md py-1 pr-2 pl-1 text-gray-100 focus:outline-none"
@@ -32,7 +34,8 @@ const BottomRight = ({ setOpenNewTeamModal, setOpenNewProjectModal, setOpenNewTa
                 {location.pathname.split('/')[2] === "teams" && "New Team"}
                 {location.pathname.split('/')[1] === "projects" && "New Project"}
                 {location.pathname.split('/')[1] === "tasks" && "Add Column"}
-            </button>
+                {location.pathname.split('/')[1] === "notes" && "Add Category"}
+            </button>}
         </div>
     )
 }

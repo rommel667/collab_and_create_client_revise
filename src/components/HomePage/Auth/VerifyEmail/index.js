@@ -28,7 +28,7 @@ const VerifyEmail = () => {
             localStorage.removeItem('email')
             setCode(null)
             dispatch({ type: "LOGIN", payload: { user: result.data.verifyUser } })
-            history.push('/')
+            history.push('/projects')
         },
         variables: {
             email: localStorage.getItem('email'), code

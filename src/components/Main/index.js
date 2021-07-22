@@ -5,6 +5,7 @@ import Notes from './Notes'
 import Devs from './Devs'
 import ProjectTasks from './Tasks/ProjectTasks'
 import AssignedTasks from './AssignedTasks'
+import CreatedTasks from './CreatedTasks'
 import PersonalTasks from './Tasks/PersonalTasks'
 import { Switch, Route, useLocation } from 'react-router-dom'
 import InitialQueryProvider from '../../graphql/hoc/InitialQueryProvider'
@@ -36,6 +37,9 @@ const Main = ({ user }) => {
                 />
                 <Route exact path='/tasks/assignedtome' render={(props) => (
                     projects && <AssignedTasks {...props} />)}
+                />
+                <Route exact path='/tasks/createdbyme' render={(props) => (
+                    projects && <CreatedTasks {...props} />)}
                 />
                 <Route path='/tasks/:projectId' render={(props) => (
                     projects && <ProjectTasks {...props} />)}

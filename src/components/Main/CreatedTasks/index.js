@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import Task from './Task'
 
-const AssignedTasks = () => {
+const CreatedTasks = () => {
 
     const { projects } = useSelector(state => state.project)
     const { user } = useSelector(state => state.user)
@@ -15,7 +15,7 @@ const AssignedTasks = () => {
             if (project.status === "Ongoing") {
                 project.taskColumns.map(column => {
                     column.tasks.map(task => {
-                        if (task.inCharge.some(ic => ic._id === user._id)) {
+                        if (task.createdBy._id === user._id) {
                             tempTasks.push(task)
                         }
                         return null
@@ -46,4 +46,4 @@ const AssignedTasks = () => {
     )
 }
 
-export default AssignedTasks
+export default CreatedTasks

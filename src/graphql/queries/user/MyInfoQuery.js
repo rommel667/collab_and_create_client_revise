@@ -10,6 +10,7 @@ const MyInfoQuery = () => {
     MY_INFO,
     {
       onCompleted: () => {
+        console.log("MY_INFO_DATA", data);
         dispatch({ type: "MY_INFO", payload: { myInfo: data.myInfo } })
       }
     })
